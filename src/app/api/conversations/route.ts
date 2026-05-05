@@ -79,15 +79,11 @@ export async function POST(req: NextRequest) {
     const existing = await db.conversation.findFirst({
       where: {
         isGroup: false,
-        participants: {
-          every: { userId: { in: allUserIds } },
-        },
-        participants: {
-          some: { userId: allUserIds[0] },
-        },
-        participants: {
-          some: { userId: allUserIds[1] },
-        },
+        AND: [
+          { participants: { every: { userId: { in: allUserIds } } } },
+          { participants: { some: { userId: allUserIds[0] } } },
+          { participants: { some: { userId: allUserIds[1] } } },
+        ],
       },
       include: { participants: true },
     });
