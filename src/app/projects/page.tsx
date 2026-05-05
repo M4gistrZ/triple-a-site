@@ -16,10 +16,10 @@ type Project = {
 };
 
 const statusColors: Record<string, string> = {
-  planning: "bg-amber-50 text-amber-700",
-  "in progress": "bg-green-50 text-green-700",
-  completed: "bg-pink-50 text-pink-700",
-  paused: "bg-stone-100 text-stone-500",
+  planning: "bg-amber-light text-amber",
+  "in progress": "bg-green-light text-green",
+  completed: "bg-pink-light text-pink",
+  paused: "bg-bg-hover text-text-muted",
 };
 
 const statusLabels: Record<string, string> = {
@@ -37,7 +37,7 @@ function ProjectCard({ project }: { project: Project }) {
   return (
     <Link
       href={`/projects/${project.id}`}
-      className="group block rounded-lg overflow-hidden border border-stone-200 hover:border-pink-300 transition-all"
+      className="group block rounded-lg overflow-hidden border border-border hover:border-pink transition-all bg-bg-elevated"
     >
       {hasCover ? (
         <div className="relative h-40 overflow-hidden">
@@ -53,7 +53,7 @@ function ProjectCard({ project }: { project: Project }) {
             </h3>
             <span
               className={`inline-block text-xs px-2 py-0.5 rounded-full ${
-                statusColors[project.status] || "bg-stone-100 text-stone-500"
+                statusColors[project.status] || "bg-bg-hover text-text-muted"
               }`}
             >
               {statusLabels[project.status] || project.status}
@@ -61,8 +61,8 @@ function ProjectCard({ project }: { project: Project }) {
           </div>
         </div>
       ) : (
-        <div className="h-40 bg-gradient-to-br from-stone-100 to-stone-200 flex items-center justify-center p-4">
-          <h3 className="font-semibold text-xl text-stone-600 text-center">
+        <div className="h-40 bg-bg-secondary flex items-center justify-center p-4">
+          <h3 className="font-semibold text-xl text-text text-center">
             {project.title}
           </h3>
         </div>
@@ -73,17 +73,17 @@ function ProjectCard({ project }: { project: Project }) {
           <div className="mb-2">
             <span
               className={`inline-block text-xs px-2 py-0.5 rounded-full ${
-                statusColors[project.status] || "bg-stone-100 text-stone-500"
+                statusColors[project.status] || "bg-bg-hover text-text-muted"
               }`}
             >
               {statusLabels[project.status] || project.status}
             </span>
           </div>
         )}
-        <p className="text-sm text-stone-500 line-clamp-2 mb-3">
+        <p className="text-sm text-text-muted line-clamp-2 mb-3">
           {project.description}
         </p>
-        <div className="flex items-center justify-between text-xs text-stone-400">
+        <div className="flex items-center justify-between text-xs text-text-muted">
           <span>{project.creator.nickname}</span>
           <span>
             {new Date(project.createdAt).toLocaleDateString("ru-RU")}
@@ -115,7 +115,7 @@ export default function ProjectsPage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center p-8">
-        <p className="text-stone-400">Загрузка...</p>
+        <p className="text-text-muted">Загрузка...</p>
       </div>
     );
   }
@@ -123,18 +123,18 @@ export default function ProjectsPage() {
   return (
     <div className="p-8">
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold">Проекты</h1>
+        <h1 className="text-2xl font-bold text-text">Проекты</h1>
         <div className="flex gap-2">
           <Link
             href="/gallery"
-            className="flex items-center gap-2 px-4 py-2 bg-stone-100 border border-stone-200 hover:bg-stone-200 text-stone-600 rounded-md transition-colors text-sm"
+            className="flex items-center gap-2 px-4 py-2 bg-bg-hover border border-border hover:bg-bg-hover/80 text-text rounded-md transition-colors text-sm"
           >
             <Image className="w-4 h-4" />
             Галерея
           </Link>
           <Link
             href="/projects/new"
-            className="flex items-center gap-2 px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-md transition-colors text-sm"
+            className="flex items-center gap-2 px-4 py-2 bg-green hover:bg-green-hover text-white rounded-md transition-colors text-sm"
           >
             <Plus className="w-4 h-4" />
             Новый проект
@@ -155,8 +155,8 @@ export default function ProjectsPage() {
             onClick={() => setFilter(s.value)}
             className={`px-3 py-1 text-sm rounded-md transition-colors ${
               filter === s.value
-                ? "bg-pink-600 text-white"
-                : "bg-stone-100 text-stone-500 hover:bg-stone-200"
+                ? "bg-pink text-white"
+                : "bg-bg-hover text-text-muted hover:bg-bg-hover/80"
             }`}
           >
             {s.label}
@@ -165,7 +165,7 @@ export default function ProjectsPage() {
       </div>
 
       {filtered.length === 0 ? (
-        <p className="text-stone-400 text-center py-12">
+        <p className="text-text-muted text-center py-12">
           {filter === "all"
             ? "Пока нет проектов. Создайте первый!"
             : "Нет проектов с таким статусом"}

@@ -19,28 +19,28 @@ export default function MembersPage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center p-8">
-        <p className="text-stone-400">Загрузка...</p>
+        <p className="text-text-muted">Загрузка...</p>
       </div>
     );
   }
 
   return (
     <div className="p-8">
-      <h1 className="text-2xl font-bold mb-6">Участники</h1>
+      <h1 className="text-2xl font-bold mb-6 text-text">Участники</h1>
 
       {members.length === 0 ? (
-        <p className="text-stone-400">Пока нет участников</p>
+        <p className="text-text-muted">Пока нет участников</p>
       ) : (
         <div className="space-y-2">
           {members.map((member) => (
             <div
               key={member.id}
-              className="flex items-center justify-between p-4 bg-stone-50 border border-stone-200 rounded-lg"
+              className="flex items-center justify-between p-4 bg-bg-elevated border border-border rounded-lg"
             >
-              <span className="font-medium text-stone-800">
+              <span className="font-medium text-text">
                 {member.nickname}
               </span>
-              <span className="text-sm text-stone-400">
+              <span className="text-sm text-text-muted">
                 {new Date(member.createdAt).toLocaleDateString("ru-RU")}
               </span>
             </div>

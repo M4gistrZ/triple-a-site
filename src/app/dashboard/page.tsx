@@ -23,10 +23,10 @@ type Project = {
 };
 
 const statusColors: Record<string, string> = {
-  planning: "bg-amber-50 text-amber-700",
-  "in progress": "bg-green-50 text-green-700",
-  completed: "bg-pink-50 text-pink-700",
-  paused: "bg-stone-100 text-stone-500",
+  planning: "bg-amber-light text-amber",
+  "in progress": "bg-green-light text-green",
+  completed: "bg-pink-light text-pink",
+  paused: "bg-bg-hover text-text-muted",
 };
 
 const statusLabels: Record<string, string> = {
@@ -57,20 +57,20 @@ export default function DashboardPage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center p-8">
-        <p className="text-stone-400">Загрузка...</p>
+        <p className="text-text-muted">Загрузка...</p>
       </div>
     );
   }
 
   return (
     <div className="p-8">
-      <h1 className="text-2xl font-bold mb-6">Дашборд</h1>
+      <h1 className="text-2xl font-bold mb-6 text-text">Дашборд</h1>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="bg-stone-50 border border-stone-200 rounded-lg p-6">
-          <h2 className="text-lg font-semibold mb-4">Последние проекты</h2>
+        <div className="bg-bg-elevated border border-border rounded-lg p-6">
+          <h2 className="text-lg font-semibold mb-4 text-text">Последние проекты</h2>
           {recentProjects.length === 0 ? (
-            <p className="text-stone-400 text-sm">Пока нет проектов</p>
+            <p className="text-text-muted text-sm">Пока нет проектов</p>
           ) : (
             <div className="space-y-3">
               {recentProjects.map((project) => {
@@ -80,7 +80,7 @@ export default function DashboardPage() {
                 <Link
                   key={project.id}
                   href={`/projects/${project.id}`}
-                  className="block bg-white border border-stone-200 rounded-md overflow-hidden hover:border-pink-300 transition-colors"
+                  className="block bg-bg-elevated border border-border rounded-md overflow-hidden hover:border-pink transition-colors"
                 >
                   {coverUrl && (
                     <div className="h-24 overflow-hidden">
@@ -92,18 +92,18 @@ export default function DashboardPage() {
                     </div>
                   )}
                   <div className={`flex items-center justify-between ${coverUrl ? "p-3" : "p-3"}`}>
-                    <span className="font-medium text-stone-800">
+                    <span className="font-medium text-text">
                       {project.title}
                     </span>
                     <span
                       className={`text-xs px-2 py-1 rounded-full ${
-                        statusColors[project.status] || "bg-stone-100 text-stone-500"
+                        statusColors[project.status] || "bg-bg-hover text-text-muted"
                       }`}
                     >
                       {statusLabels[project.status] || project.status}
                     </span>
                   </div>
-                  <p className="text-xs text-stone-400 pb-3 px-3">
+                  <p className="text-xs text-text-muted pb-3 px-3">
                     {project.creator.nickname} ·{" "}
                     {new Date(project.createdAt).toLocaleDateString("ru-RU")}
                   </p>
@@ -114,22 +114,22 @@ export default function DashboardPage() {
           )}
         </div>
 
-        <div className="bg-stone-50 border border-stone-200 rounded-lg p-6">
-          <h2 className="text-lg font-semibold mb-4">Активность</h2>
+        <div className="bg-bg-elevated border border-border rounded-lg p-6">
+          <h2 className="text-lg font-semibold mb-4 text-text">Активность</h2>
           {activity.length === 0 ? (
-            <p className="text-stone-400 text-sm">Пока нет активности</p>
+            <p className="text-text-muted text-sm">Пока нет активности</p>
           ) : (
             <div className="space-y-3">
               {activity.slice(0, 10).map((item) => (
                 <div
                   key={item.id}
-                  className="p-3 bg-white border border-stone-200 rounded-md"
+                  className="p-3 bg-bg-elevated border border-border rounded-md"
                 >
-                  <p className="text-sm text-stone-700">
-                    <span className="text-pink-600">{item.user.nickname}</span>{" "}
+                  <p className="text-sm text-text">
+                    <span className="text-pink">{item.user.nickname}</span>{" "}
                     {item.content}
                   </p>
-                  <p className="text-xs text-stone-400 mt-1">
+                  <p className="text-xs text-text-muted mt-1">
                     {new Date(item.createdAt).toLocaleString("ru-RU")}
                   </p>
                 </div>

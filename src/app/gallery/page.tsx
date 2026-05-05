@@ -28,7 +28,7 @@ export default function GalleryPage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center p-8">
-        <p className="text-stone-400">Загрузка...</p>
+        <p className="text-text-muted">Загрузка...</p>
       </div>
     );
   }
@@ -38,17 +38,17 @@ export default function GalleryPage() {
       <div className="mb-6">
         <Link
           href="/projects"
-          className="flex items-center gap-2 text-sm text-stone-400 hover:text-pink-600 transition-colors"
+          className="flex items-center gap-2 text-sm text-text-muted hover:text-pink transition-colors"
         >
           <ArrowLeft className="w-4 h-4" />
           Назад к проектам
         </Link>
       </div>
 
-      <h1 className="text-2xl font-bold mb-6">Галерея</h1>
+      <h1 className="text-2xl font-bold mb-6 text-text">Галерея</h1>
 
       {items.length === 0 ? (
-        <p className="text-stone-400 text-center py-12">
+        <p className="text-text-muted text-center py-12">
           Пока нет изображений
         </p>
       ) : (
@@ -59,7 +59,7 @@ export default function GalleryPage() {
               onClick={() => setSelected(item)}
               className="block w-full break-inside-avoid group cursor-pointer"
             >
-              <div className="relative bg-stone-50 border border-stone-200 rounded-lg overflow-hidden">
+              <div className="relative bg-bg-elevated border border-border rounded-lg overflow-hidden">
                 <img
                   src={item.url}
                   alt={item.title}
@@ -69,7 +69,7 @@ export default function GalleryPage() {
                   <div className="absolute bottom-0 left-0 right-0 p-2">
                     <p className="text-xs text-white truncate">{item.title}</p>
                     {item.isCover && (
-                      <span className="text-xs text-pink-300">обложка</span>
+                      <span className="text-xs text-pink">обложка</span>
                     )}
                   </div>
                 </div>

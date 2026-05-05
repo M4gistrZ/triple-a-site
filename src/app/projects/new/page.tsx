@@ -44,31 +44,31 @@ export default function NewProjectPage() {
   return (
     <div className="p-8">
       <div className="max-w-2xl">
-        <h1 className="text-2xl font-bold mb-6">Новый проект</h1>
+        <h1 className="text-2xl font-bold mb-6 text-text">Новый проект</h1>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-stone-500 mb-1">
+            <label className="block text-sm font-medium text-text-muted mb-1">
               Название *
             </label>
             <input
               type="text"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              className="w-full px-3 py-2 bg-white border border-stone-200 rounded-md text-stone-800 focus:outline-none focus:border-green-400"
+              className="w-full px-3 py-2 bg-bg border border-border rounded-md text-text focus:outline-none focus:border-green"
               placeholder="Название проекта"
               required
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-stone-500 mb-1">
+            <label className="block text-sm font-medium text-text-muted mb-1">
               Статус
             </label>
             <select
               value={status}
               onChange={(e) => setStatus(e.target.value)}
-              className="w-full px-3 py-2 bg-white border border-stone-200 rounded-md text-stone-800 focus:outline-none focus:border-green-400"
+              className="w-full px-3 py-2 bg-bg border border-border rounded-md text-text focus:outline-none focus:border-green"
             >
               <option value="planning">Планирование</option>
               <option value="in progress">В работе</option>
@@ -78,7 +78,7 @@ export default function NewProjectPage() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-stone-500 mb-1">
+            <label className="block text-sm font-medium text-text-muted mb-1">
               Обложка
             </label>
             <FileUpload
@@ -90,40 +90,40 @@ export default function NewProjectPage() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-stone-500 mb-1">
+            <label className="block text-sm font-medium text-text-muted mb-1">
               Описание *
             </label>
             <textarea
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               rows={6}
-              className="w-full px-3 py-2 bg-white border border-stone-200 rounded-md text-stone-800 focus:outline-none focus:border-green-400 resize-none"
+              className="w-full px-3 py-2 bg-bg border border-border rounded-md text-text focus:outline-none focus:border-green resize-none"
               placeholder="Подробное описание проекта..."
               required
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-stone-500 mb-1">
+            <label className="block text-sm font-medium text-text-muted mb-1">
               Галерея
             </label>
             <ReferenceUploader images={images} onChange={setImages} />
           </div>
 
-          {error && <p className="text-sm text-pink-600">{error}</p>}
+          {error && <p className="text-sm text-pink">{error}</p>}
 
           <div className="flex gap-2 pt-2">
             <button
               type="submit"
               disabled={loading}
-              className="px-6 py-2 bg-green-600 hover:bg-green-700 text-white rounded-md transition-colors disabled:opacity-50"
+              className="px-6 py-2 bg-green hover:bg-green-hover text-white rounded-md transition-colors disabled:opacity-50"
             >
               {loading ? "Создание..." : "Создать"}
             </button>
             <button
               type="button"
               onClick={() => router.back()}
-              className="px-6 py-2 bg-stone-100 border border-stone-200 hover:bg-stone-200 text-stone-600 rounded-md transition-colors"
+              className="px-6 py-2 bg-bg-hover border border-border hover:bg-bg-hover/80 text-text rounded-md transition-colors"
             >
               Отмена
             </button>

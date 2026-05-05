@@ -30,8 +30,8 @@ export function Navbar() {
                   href={item.href}
                   className={`text-sm transition-colors ${
                     pathname === item.href
-                      ? "text-white"
-                      : "text-muted hover:text-white"
+                      ? "text-text"
+                      : "text-text-muted hover:text-text"
                   }`}
                 >
                   {item.label}
@@ -40,10 +40,10 @@ export function Navbar() {
             </div>
           </div>
           <div className="flex items-center gap-4">
-            <span className="text-sm text-muted">{user.nickname}</span>
+            <span className="text-sm text-text-muted">{user.nickname}</span>
             <button
               onClick={logout}
-              className="text-sm text-muted hover:text-white transition-colors"
+              className="text-sm text-text-muted hover:text-text transition-colors"
             >
               Выйти
             </button>

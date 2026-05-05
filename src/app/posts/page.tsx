@@ -142,34 +142,34 @@ export default function PostsPage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center p-8">
-        <p className="text-stone-400">Загрузка...</p>
+        <p className="text-text-muted">Загрузка...</p>
       </div>
     );
   }
 
   return (
     <div className="p-8">
-      <h1 className="text-2xl font-bold mb-6">Посты</h1>
+      <h1 className="text-2xl font-bold mb-6 text-text">Посты</h1>
 
-      <div className="bg-stone-50 border border-stone-200 rounded-lg p-6 mb-6">
+      <div className="bg-bg-elevated border border-border rounded-lg p-6 mb-6">
         <textarea
           value={newPost}
           onChange={(e) => setNewPost(e.target.value)}
           rows={4}
           maxLength={5000}
-          className="w-full px-3 py-2 bg-white border border-stone-200 rounded-md text-stone-700 resize-none focus:outline-none focus:border-green-400"
+          className="w-full px-3 py-2 bg-bg border border-border rounded-md text-text resize-none focus:outline-none focus:border-green"
           placeholder="Напишите что-нибудь..."
         />
         <div className="flex items-center justify-between mt-2">
-          <span className="text-xs text-stone-400">{newPost.length}/5000</span>
+          <span className="text-xs text-text-muted">{newPost.length}/5000</span>
           <div className="flex items-center gap-2">
             {postError && (
-              <span className="text-xs text-pink-600">{postError}</span>
+              <span className="text-xs text-pink">{postError}</span>
             )}
             <button
               onClick={handlePost}
               disabled={postLoading || !newPost.trim()}
-              className="flex items-center gap-1 px-4 py-1 bg-green-600 hover:bg-green-700 text-white rounded text-sm transition-colors disabled:opacity-50"
+              className="flex items-center gap-1 px-4 py-1 bg-green hover:bg-green-hover text-white rounded text-sm transition-colors disabled:opacity-50"
             >
               <Plus className="w-3 h-3" />
               Опубликовать
@@ -180,7 +180,7 @@ export default function PostsPage() {
 
       <div className="space-y-4">
         {posts.length === 0 ? (
-          <p className="text-stone-400 text-center py-8">Пока нет постов</p>
+          <p className="text-text-muted text-center py-8">Пока нет постов</p>
         ) : (
           posts.map((post) => {
             const reactionCounts: Record<string, number> = {};
@@ -191,7 +191,7 @@ export default function PostsPage() {
             return (
               <div
                 key={post.id}
-                className="bg-stone-50 border border-stone-200 rounded-lg p-5"
+                className="bg-bg-elevated border border-border rounded-lg p-5"
               >
                 <div className="flex items-center gap-3 mb-3">
                   {post.user.profile?.avatar ? (
@@ -201,22 +201,22 @@ export default function PostsPage() {
                       className="w-8 h-8 rounded-full object-cover"
                     />
                   ) : (
-                    <div className="w-8 h-8 rounded-full bg-pink-100 flex items-center justify-center text-pink-600 text-sm font-bold">
+                    <div className="w-8 h-8 rounded-full bg-pink-light flex items-center justify-center text-pink text-sm font-bold">
                       {post.user.nickname.charAt(0).toUpperCase()}
                     </div>
                   )}
                   <a
                     href={`/profile/${post.user.id}`}
-                    className="font-medium text-stone-700 hover:text-pink-600 transition-colors text-sm"
+                    className="font-medium text-text hover:text-pink transition-colors text-sm"
                   >
                     {post.user.nickname}
                   </a>
-                  <span className="text-xs text-stone-400">
+                  <span className="text-xs text-text-muted">
                     {new Date(post.createdAt).toLocaleString("ru-RU")}
                   </span>
                 </div>
 
-                <p className="text-stone-700 whitespace-pre-wrap text-sm mb-4">
+                <p className="text-text whitespace-pre-wrap text-sm mb-4">
                   {post.content}
                 </p>
 
@@ -225,7 +225,7 @@ export default function PostsPage() {
                     <button
                       key={emoji}
                       onClick={() => toggleReaction(post.id, emoji)}
-                      className="inline-flex items-center gap-1 px-2 py-0.5 bg-white border rounded-full text-xs transition-colors cursor-pointer hover:border-pink-300"
+                      className="inline-flex items-center gap-1 px-2 py-0.5 bg-bg border border-border rounded-full text-xs transition-colors cursor-pointer hover:border-pink"
                     >
                       {emoji} {count}
                     </button>
@@ -237,17 +237,17 @@ export default function PostsPage() {
                           emojiPicker === post.id ? null : post.id
                         )
                       }
-                      className="px-2 py-0.5 bg-white border border-stone-200 rounded-full text-xs text-stone-400 hover:border-pink-300 transition-colors"
+                      className="px-2 py-0.5 bg-bg border border-border rounded-full text-xs text-text-muted hover:border-pink transition-colors"
                     >
                       +
                     </button>
                     {emojiPicker === post.id && (
-                      <div className="absolute top-full left-0 mt-1 bg-white border border-stone-200 rounded-lg p-2 flex gap-1 z-10 shadow-lg">
+                      <div className="absolute top-full left-0 mt-1 bg-bg-elevated border border-border rounded-lg p-2 flex gap-1 z-10 shadow-lg">
                         {defaultEmojis.map((emoji) => (
                           <button
                             key={emoji}
                             onClick={() => toggleReaction(post.id, emoji)}
-                            className="w-7 h-7 flex items-center justify-center hover:bg-stone-100 rounded text-sm transition-colors"
+                            className="w-7 h-7 flex items-center justify-center hover:bg-bg-hover rounded text-sm transition-colors"
                           >
                             {emoji}
                           </button>
@@ -260,14 +260,14 @@ export default function PostsPage() {
                 <div className="flex items-center gap-4">
                   <button
                     onClick={() => loadComments(post.id)}
-                    className="text-xs text-stone-400 hover:text-pink-600 transition-colors"
+                    className="text-xs text-text-muted hover:text-pink transition-colors"
                   >
                     Комментарии ({post._count.comments})
                   </button>
                 </div>
 
                 {commentsOpen[post.id] && (
-                  <div className="mt-4 pt-4 border-t border-stone-200">
+                  <div className="mt-4 pt-4 border-t border-border">
                     <div className="space-y-3 mb-4">
                       {(comments[post.id] || []).map((comment) => (
                         <div key={comment.id} className="flex items-start gap-2">
@@ -278,29 +278,29 @@ export default function PostsPage() {
                               className="w-6 h-6 rounded-full object-cover mt-0.5"
                             />
                           ) : (
-                            <div className="w-6 h-6 rounded-full bg-pink-100 flex items-center justify-center text-pink-600 text-xs font-bold mt-0.5">
+                            <div className="w-6 h-6 rounded-full bg-pink-light flex items-center justify-center text-pink text-xs font-bold mt-0.5">
                               {comment.user.nickname.charAt(0).toUpperCase()}
                             </div>
                           )}
-                          <div className="flex-1 bg-white border border-stone-200 rounded-md px-3 py-2">
+                          <div className="flex-1 bg-bg border border-border rounded-md px-3 py-2">
                             <div className="flex items-center justify-between">
                               <a
                                 href={`/profile/${comment.user.id}`}
-                                className="text-xs font-medium text-stone-600 hover:text-pink-600"
+                                className="text-xs font-medium text-text hover:text-pink"
                               >
                                 {comment.user.nickname}
                               </a>
-                              <span className="text-xs text-stone-300">
+                              <span className="text-xs text-text-muted">
                                 {new Date(comment.createdAt).toLocaleString("ru-RU")}
                               </span>
                             </div>
-                            <p className="text-sm text-stone-700 mt-1">
+                            <p className="text-sm text-text mt-1">
                               {comment.content}
                             </p>
                           </div>
                           <button
                             onClick={() => deleteComment(comment.id)}
-                            className="p-1 text-stone-300 hover:text-pink-600 transition-colors"
+                            className="p-1 text-text-muted hover:text-pink transition-colors"
                           >
                             <Trash2 className="w-3 h-3" />
                           </button>
@@ -320,13 +320,13 @@ export default function PostsPage() {
                         onKeyDown={(e) => {
                           if (e.key === "Enter") submitComment(post.id);
                         }}
-                        className="flex-1 px-3 py-1.5 bg-white border border-stone-200 rounded-md text-sm text-stone-700 focus:outline-none focus:border-green-400"
+                        className="flex-1 px-3 py-1.5 bg-bg border border-border rounded-md text-sm text-text focus:outline-none focus:border-green"
                         placeholder="Написать комментарий..."
                         maxLength={1000}
                       />
                       <button
                         onClick={() => submitComment(post.id)}
-                        className="p-1.5 bg-green-600 hover:bg-green-700 text-white rounded-md transition-colors"
+                        className="p-1.5 bg-green hover:bg-green-hover text-white rounded-md transition-colors"
                       >
                         <Send className="w-4 h-4" />
                       </button>

@@ -33,14 +33,14 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen flex items-center justify-center">
-      <div className="w-full max-w-md p-8 bg-stone-50 border border-stone-200 rounded-lg">
+      <div className="w-full max-w-md p-8 bg-bg-elevated border border-border rounded-lg">
         <div className="flex justify-center mb-4">
-          <Leaf className="w-10 h-10 text-green-600" />
+          <Leaf className="w-10 h-10 text-green" />
         </div>
-        <h1 className="text-2xl font-bold text-center mb-1 text-pink-600">
+        <h1 className="text-2xl font-bold text-center mb-1 text-pink">
           Triple-A
         </h1>
-        <p className="text-stone-400 text-center text-sm mb-6">
+        <p className="text-text-muted text-center text-sm mb-6">
           {isLogin ? "Войти в систему" : "Создать аккаунт"}
         </p>
 
@@ -48,7 +48,7 @@ export default function LoginPage() {
           <div>
             <label
               htmlFor="nickname"
-              className="block text-sm font-medium text-stone-500 mb-1"
+              className="block text-sm font-medium text-text-muted mb-1"
             >
               Ник
             </label>
@@ -57,7 +57,7 @@ export default function LoginPage() {
               type="text"
               value={nickname}
               onChange={(e) => setNickname(e.target.value)}
-              className="w-full px-3 py-2 bg-white border border-stone-200 rounded-md text-stone-800 focus:outline-none focus:border-pink-400"
+              className="w-full px-3 py-2 bg-bg border border-border rounded-md text-text focus:outline-none focus:border-pink"
               placeholder="Ваш никнейм"
               required
             />
@@ -66,7 +66,7 @@ export default function LoginPage() {
           <div>
             <label
               htmlFor="password"
-              className="block text-sm font-medium text-stone-500 mb-1"
+              className="block text-sm font-medium text-text-muted mb-1"
             >
               Пароль
             </label>
@@ -75,38 +75,38 @@ export default function LoginPage() {
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-3 py-2 bg-white border border-stone-200 rounded-md text-stone-800 focus:outline-none focus:border-pink-400"
+              className="w-full px-3 py-2 bg-bg border border-border rounded-md text-text focus:outline-none focus:border-pink"
               placeholder="••••••••"
               required
             />
           </div>
 
-          {error && <p className="text-sm text-pink-600">{error}</p>}
+          {error && <p className="text-sm text-pink">{error}</p>}
 
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-2 px-4 bg-pink-600 hover:bg-pink-700 text-white rounded-md transition-colors disabled:opacity-50"
+            className="w-full py-2 px-4 bg-pink hover:bg-pink-hover text-white rounded-md transition-colors disabled:opacity-50"
           >
             {loading ? "Загрузка..." : isLogin ? "Войти" : "Регистрация"}
           </button>
         </form>
 
-        <p className="mt-4 text-center text-sm text-stone-400">
+        <p className="mt-4 text-center text-sm text-text-muted">
           {isLogin ? "Нет аккаунта? " : "Уже есть аккаунт? "}
           <button
             onClick={() => {
               setIsLogin(!isLogin);
               setError("");
             }}
-            className="text-green-600 hover:underline"
+            className="text-green hover:underline"
           >
             {isLogin ? "Зарегистрироваться" : "Войти"}
           </button>
         </p>
 
-        <p className="mt-6 text-center text-xs text-stone-400">
-          <Link href="/" className="hover:text-pink-600 transition-colors">
+        <p className="mt-6 text-center text-xs text-text-muted">
+          <Link href="/" className="hover:text-pink transition-colors">
             На главную
           </Link>
         </p>

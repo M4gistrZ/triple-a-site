@@ -78,8 +78,8 @@ export function FileUpload({
           onClick={() => setMode("file")}
           className={`flex items-center gap-1.5 px-2.5 py-1 text-xs rounded transition-colors ${
             mode === "file"
-              ? "bg-stone-800 text-white"
-              : "text-stone-500 hover:text-stone-700"
+              ? "bg-text text-bg"
+              : "text-text-muted hover:text-text"
           }`}
         >
           <Upload className="w-3 h-3" />
@@ -90,8 +90,8 @@ export function FileUpload({
           onClick={() => setMode("url")}
           className={`flex items-center gap-1.5 px-2.5 py-1 text-xs rounded transition-colors ${
             mode === "url"
-              ? "bg-stone-800 text-white"
-              : "text-stone-500 hover:text-stone-700"
+              ? "bg-text text-bg"
+              : "text-text-muted hover:text-text"
           }`}
         >
           <LinkIcon className="w-3 h-3" />
@@ -105,7 +105,7 @@ export function FileUpload({
             type="button"
             onClick={() => inputRef.current?.click()}
             disabled={uploading}
-            className="flex items-center gap-2 px-3 py-1.5 bg-stone-100 border border-stone-200 hover:border-stone-300 rounded text-sm text-stone-600 transition-colors disabled:opacity-50"
+            className="flex items-center gap-2 px-3 py-1.5 bg-bg-hover border border-border hover:bg-bg-hover/80 rounded text-sm text-text transition-colors disabled:opacity-50"
           >
             <Upload className="w-3 h-3" />
             {uploading ? "Загрузка..." : label}
@@ -137,13 +137,13 @@ export function FileUpload({
                 handleUrlSubmit();
               }
             }}
-            className="flex-1 px-2 py-1 bg-white border border-stone-200 rounded text-sm text-stone-700 focus:outline-none focus:border-pink-400"
+            className="flex-1 px-2 py-1 bg-bg border border-border rounded text-sm text-text focus:outline-none focus:border-pink"
             placeholder="https://example.com/image.jpg"
           />
           <button
             type="button"
             onClick={handleUrlSubmit}
-            className="px-3 py-1 bg-stone-800 hover:bg-stone-700 text-white rounded text-sm transition-colors"
+            className="px-3 py-1 bg-text hover:bg-text/80 text-bg rounded text-sm transition-colors"
           >
             OK
           </button>
@@ -157,7 +157,7 @@ export function FileUpload({
         </div>
       )}
 
-      {error && <p className="text-xs text-pink-600 mt-1">{error}</p>}
+      {error && <p className="text-xs text-pink mt-1">{error}</p>}
     </div>
   );
 }

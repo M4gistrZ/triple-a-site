@@ -63,8 +63,8 @@ export function ReferenceUploader({
           onClick={() => setMode("file")}
           className={`flex items-center gap-1.5 px-2.5 py-1 text-xs rounded transition-colors ${
             mode === "file"
-              ? "bg-stone-800 text-white"
-              : "text-stone-500 hover:text-stone-700"
+              ? "bg-text text-bg"
+              : "text-text-muted hover:text-text"
           }`}
         >
           <Upload className="w-3 h-3" />
@@ -75,8 +75,8 @@ export function ReferenceUploader({
           onClick={() => setMode("url")}
           className={`flex items-center gap-1.5 px-2.5 py-1 text-xs rounded transition-colors ${
             mode === "url"
-              ? "bg-stone-800 text-white"
-              : "text-stone-500 hover:text-stone-700"
+              ? "bg-text text-bg"
+              : "text-text-muted hover:text-text"
           }`}
         >
           <LinkIcon className="w-3 h-3" />
@@ -89,7 +89,7 @@ export function ReferenceUploader({
           type="button"
           onClick={() => inputRef.current?.click()}
           disabled={uploading}
-          className="flex items-center gap-2 px-3 py-1.5 bg-stone-100 border border-stone-200 hover:border-stone-300 rounded text-sm text-stone-600 transition-colors disabled:opacity-50"
+          className="flex items-center gap-2 px-3 py-1.5 bg-bg-hover border border-border hover:bg-bg-hover/80 rounded text-sm text-text transition-colors disabled:opacity-50"
         >
           <Upload className="w-3 h-3" />
           {uploading ? "Загрузка..." : "Загрузить изображения"}
@@ -106,13 +106,13 @@ export function ReferenceUploader({
                 handleUrlAdd();
               }
             }}
-            className="flex-1 px-2 py-1 bg-white border border-stone-200 rounded text-sm text-stone-700 focus:outline-none focus:border-pink-400"
+            className="flex-1 px-2 py-1 bg-bg border border-border rounded text-sm text-text focus:outline-none focus:border-pink"
             placeholder="https://example.com/image.jpg"
           />
           <button
             type="button"
             onClick={handleUrlAdd}
-            className="px-3 py-1 bg-stone-800 hover:bg-stone-700 text-white rounded text-sm transition-colors"
+            className="px-3 py-1 bg-text hover:bg-text/80 text-bg rounded text-sm transition-colors"
           >
             Добавить
           </button>
@@ -127,7 +127,7 @@ export function ReferenceUploader({
         className="hidden"
       />
 
-      {error && <p className="text-xs text-pink-600 mt-1">{error}</p>}
+      {error && <p className="text-xs text-pink mt-1">{error}</p>}
 
       {images.length > 0 && (
         <div className="mt-3 grid grid-cols-3 gap-2">
@@ -136,7 +136,7 @@ export function ReferenceUploader({
               <button
                 type="button"
                 onClick={() => setSelectedImage(img)}
-                className="w-full h-24 rounded-md border border-stone-200 overflow-hidden cursor-pointer"
+                className="w-full h-24 rounded-md border border-border overflow-hidden cursor-pointer"
               >
                 <img
                   src={img}
@@ -150,7 +150,7 @@ export function ReferenceUploader({
                   e.stopPropagation();
                   removeImage(i);
                 }}
-                className="absolute top-1 right-1 w-5 h-5 bg-pink-600 rounded-full text-white text-xs flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                className="absolute top-1 right-1 w-5 h-5 bg-pink text-white rounded-full text-xs flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
               >
                 <X className="w-3 h-3" />
               </button>

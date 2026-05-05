@@ -88,7 +88,7 @@ export default function ProjectDetailPage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center p-8">
-        <p className="text-stone-400">Загрузка...</p>
+        <p className="text-text-muted">Загрузка...</p>
       </div>
     );
   }
@@ -103,7 +103,7 @@ export default function ProjectDetailPage() {
       <div className="mb-6">
         <Link
           href="/projects"
-          className="flex items-center gap-2 text-sm text-stone-400 hover:text-pink-600 transition-colors"
+          className="flex items-center gap-2 text-sm text-text-muted hover:text-pink transition-colors"
         >
           <ArrowLeft className="w-4 h-4" />
           Назад к проектам
@@ -116,12 +116,12 @@ export default function ProjectDetailPage() {
             type="text"
             value={editData.title}
             onChange={(e) => setEditData({ ...editData, title: e.target.value })}
-            className="w-full px-3 py-2 bg-white border border-stone-200 rounded-md text-stone-800 text-xl font-bold focus:outline-none focus:border-pink-400"
+            className="w-full px-3 py-2 bg-bg border border-border rounded-md text-text text-xl font-bold focus:outline-none focus:border-pink"
           />
           <select
             value={editData.status}
             onChange={(e) => setEditData({ ...editData, status: e.target.value })}
-            className="w-full px-3 py-2 bg-white border border-stone-200 rounded-md text-stone-800 focus:outline-none focus:border-pink-400"
+            className="w-full px-3 py-2 bg-bg border border-border rounded-md text-text focus:outline-none focus:border-pink"
           >
             <option value="planning">Планирование</option>
             <option value="in progress">В работе</option>
@@ -132,10 +132,10 @@ export default function ProjectDetailPage() {
             value={editData.description}
             onChange={(e) => setEditData({ ...editData, description: e.target.value })}
             rows={8}
-            className="w-full px-3 py-2 bg-white border border-stone-200 rounded-md text-stone-800 focus:outline-none focus:border-pink-400 resize-none"
+            className="w-full px-3 py-2 bg-bg border border-border rounded-md text-text focus:outline-none focus:border-pink resize-none"
           />
           <div>
-            <label className="block text-sm font-medium text-stone-500 mb-1">
+            <label className="block text-sm font-medium text-text-muted mb-1">
               Галерея
             </label>
             <ReferenceUploader images={galleryImages} onChange={setGalleryImages} />
@@ -143,13 +143,13 @@ export default function ProjectDetailPage() {
           <div className="flex gap-2">
             <button
               onClick={handleSave}
-              className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-md transition-colors"
+              className="px-4 py-2 bg-green hover:bg-green-hover text-white rounded-md transition-colors"
             >
               Сохранить
             </button>
             <button
               onClick={() => setEditing(false)}
-              className="px-4 py-2 bg-stone-100 border border-stone-200 hover:bg-stone-200 text-stone-600 rounded-md transition-colors"
+              className="px-4 py-2 bg-bg-hover border border-border hover:bg-bg-hover/80 text-text rounded-md transition-colors"
             >
               Отмена
             </button>
@@ -158,20 +158,20 @@ export default function ProjectDetailPage() {
       ) : (
         <div>
           <div className="flex items-start justify-between mb-4">
-            <h1 className="text-3xl font-bold text-stone-800">
+            <h1 className="text-3xl font-bold text-text">
               {project.title}
             </h1>
             <div className="flex gap-2">
               <button
                 onClick={() => setEditing(true)}
-                className="flex items-center gap-2 px-3 py-1 text-sm bg-white border border-stone-200 hover:border-green-400 text-stone-600 rounded-md transition-colors"
+                className="flex items-center gap-2 px-3 py-1 text-sm bg-bg-elevated border border-border hover:border-green text-text rounded-md transition-colors"
               >
                 <Edit2 className="w-3 h-3" />
                 Редактировать
               </button>
               <button
                 onClick={handleDelete}
-                className="flex items-center gap-2 px-3 py-1 text-sm bg-white border border-stone-200 hover:border-pink-400 text-pink-600 rounded-md transition-colors"
+                className="flex items-center gap-2 px-3 py-1 text-sm bg-bg-elevated border border-border hover:border-pink text-pink rounded-md transition-colors"
               >
                 <Trash2 className="w-3 h-3" />
                 Удалить
@@ -180,16 +180,16 @@ export default function ProjectDetailPage() {
           </div>
 
           <div className="flex flex-wrap gap-3 mb-6">
-            <span className="text-sm bg-green-50 text-green-700 px-3 py-1 rounded-full">
+            <span className="text-sm bg-green-light text-green px-3 py-1 rounded-full">
               {statusLabels[project.status] || project.status}
             </span>
-            <span className="text-sm text-stone-400 px-3 py-1">
+            <span className="text-sm text-text-muted px-3 py-1">
               Автор: {project.creator.nickname}
             </span>
-            <span className="text-sm text-stone-400 px-3 py-1">
+            <span className="text-sm text-text-muted px-3 py-1">
               Создан: {new Date(project.createdAt).toLocaleDateString("ru-RU")}
             </span>
-            <span className="text-sm text-stone-400 px-3 py-1">
+            <span className="text-sm text-text-muted px-3 py-1">
               Обновлён: {new Date(project.updatedAt).toLocaleDateString("ru-RU")}
             </span>
           </div>
@@ -197,7 +197,7 @@ export default function ProjectDetailPage() {
           {coverUrl && (
             <button
               onClick={() => setSelectedImage(coverUrl)}
-              className="mb-6 rounded-lg overflow-hidden h-64 border border-stone-200 w-full cursor-pointer hover:opacity-90 transition-opacity"
+              className="mb-6 rounded-lg overflow-hidden h-64 border border-border w-full cursor-pointer hover:opacity-90 transition-opacity"
             >
               <img
                 src={coverUrl}
@@ -207,13 +207,13 @@ export default function ProjectDetailPage() {
             </button>
           )}
 
-          <div className="flex gap-0 mb-6 border-b border-stone-200">
+          <div className="flex gap-0 mb-6 border-b border-border">
             <button
               onClick={() => setActiveTab("desc")}
               className={`px-4 py-2 text-sm font-medium border-b-2 transition-colors ${
                 activeTab === "desc"
-                  ? "border-pink-600 text-pink-600"
-                  : "border-transparent text-stone-500 hover:text-stone-700"
+                  ? "border-pink text-pink"
+                  : "border-transparent text-text-muted hover:text-text"
               }`}
             >
               Описание
@@ -222,8 +222,8 @@ export default function ProjectDetailPage() {
               onClick={() => setActiveTab("gallery")}
               className={`px-4 py-2 text-sm font-medium border-b-2 transition-colors ${
                 activeTab === "gallery"
-                  ? "border-pink-600 text-pink-600"
-                  : "border-transparent text-stone-500 hover:text-stone-700"
+                  ? "border-pink text-pink"
+                  : "border-transparent text-text-muted hover:text-text"
               }`}
             >
               Галерея ({images.length})
@@ -232,14 +232,14 @@ export default function ProjectDetailPage() {
 
           {activeTab === "desc" ? (
             <div className="mb-8">
-              <p className="text-stone-700 whitespace-pre-wrap">
+              <p className="text-text whitespace-pre-wrap">
                 {project.description}
               </p>
             </div>
           ) : (
             <div>
               {images.length === 0 ? (
-                <p className="text-stone-400 text-sm py-8 text-center">
+                <p className="text-text-muted text-sm py-8 text-center">
                   Галерея пуста
                 </p>
               ) : (
@@ -248,7 +248,7 @@ export default function ProjectDetailPage() {
                     <button
                       key={i}
                       onClick={() => setSelectedImage(img)}
-                      className="aspect-square bg-stone-50 border border-stone-200 rounded-lg overflow-hidden group relative cursor-pointer hover:border-pink-300 transition-colors"
+                      className="aspect-square bg-bg-elevated border border-border rounded-lg overflow-hidden group relative cursor-pointer hover:border-pink transition-colors"
                     >
                       <img
                         src={img}

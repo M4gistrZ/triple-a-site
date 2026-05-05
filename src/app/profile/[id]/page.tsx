@@ -105,7 +105,7 @@ export default function ProfilePage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center p-8">
-        <p className="text-stone-400">Загрузка...</p>
+        <p className="text-text-muted">Загрузка...</p>
       </div>
     );
   }
@@ -120,7 +120,7 @@ export default function ProfilePage() {
       <div className="mb-6">
         <Link
           href="/members"
-          className="flex items-center gap-2 text-sm text-stone-400 hover:text-pink-600 transition-colors"
+          className="flex items-center gap-2 text-sm text-text-muted hover:text-pink transition-colors"
         >
           <ArrowLeft className="w-4 h-4" />
           Назад к участникам
@@ -129,14 +129,14 @@ export default function ProfilePage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-1">
-          <div className="bg-stone-50 border border-stone-200 rounded-lg p-6">
+          <div className="bg-bg-elevated border border-border rounded-lg p-6">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-semibold">Профиль</h2>
+              <h2 className="text-lg font-semibold text-text">Профиль</h2>
               <button
                 onClick={() => setEditing(!editing)}
-                className="p-1 hover:bg-stone-200 rounded transition-colors"
+                className="p-1 hover:bg-bg-hover rounded transition-colors"
               >
-                <Edit2 className="w-4 h-4 text-stone-400" />
+                <Edit2 className="w-4 h-4 text-text-muted" />
               </button>
             </div>
 
@@ -149,27 +149,27 @@ export default function ProfilePage() {
                   <img
                     src={avatarUrl}
                     alt={user.nickname}
-                    className="w-24 h-24 rounded-full object-cover border-2 border-stone-200"
+                    className="w-24 h-24 rounded-full object-cover border-2 border-border"
                   />
                 </button>
               ) : (
-                <div className="w-24 h-24 rounded-full bg-pink-100 flex items-center justify-center text-pink-600 text-2xl font-bold">
+                <div className="w-24 h-24 rounded-full bg-pink-light flex items-center justify-center text-pink text-2xl font-bold">
                   {user.nickname.charAt(0).toUpperCase()}
                 </div>
               )}
             </div>
 
-            <h3 className="text-center text-lg font-bold text-stone-800">
+            <h3 className="text-center text-lg font-bold text-text">
               {user.nickname}
             </h3>
-            <p className="text-center text-sm text-stone-400 mb-4">
+            <p className="text-center text-sm text-text-muted mb-4">
               {new Date(user.createdAt).toLocaleDateString("ru-RU")}
             </p>
 
             {editing ? (
               <div className="space-y-3 mt-4">
                 <div>
-                  <label className="block text-xs text-stone-400 mb-1">
+                  <label className="block text-xs text-text-muted mb-1">
                     О себе
                   </label>
                   <textarea
@@ -177,11 +177,11 @@ export default function ProfilePage() {
                     onChange={(e) => setBio(e.target.value)}
                     rows={3}
                     maxLength={1000}
-                    className="w-full px-2 py-1 bg-white border border-stone-200 rounded text-sm text-stone-700 resize-none focus:outline-none focus:border-pink-400"
+                    className="w-full px-2 py-1 bg-bg border border-border rounded text-sm text-text resize-none focus:outline-none focus:border-pink"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs text-stone-400 mb-1">
+                  <label className="block text-xs text-text-muted mb-1">
                     Аватарка
                   </label>
                   <FileUpload
@@ -192,7 +192,7 @@ export default function ProfilePage() {
                   />
                 </div>
                 <div>
-                  <label className="block text-xs text-stone-400 mb-1">
+                  <label className="block text-xs text-text-muted mb-1">
                     Скин
                   </label>
                   <FileUpload
@@ -206,22 +206,22 @@ export default function ProfilePage() {
                   <button
                     onClick={handleSaveProfile}
                     disabled={saving}
-                    className="flex-1 flex items-center justify-center gap-1 px-3 py-1 bg-green-600 hover:bg-green-700 text-white rounded text-sm transition-colors disabled:opacity-50"
+                    className="flex-1 flex items-center justify-center gap-1 px-3 py-1 bg-green hover:bg-green-hover text-white rounded text-sm transition-colors disabled:opacity-50"
                   >
                     <Save className="w-3 h-3" />
                     Сохранить
                   </button>
                   <button
                     onClick={() => setEditing(false)}
-                    className="p-1 hover:bg-stone-200 rounded transition-colors"
+                    className="p-1 hover:bg-bg-hover rounded transition-colors"
                   >
-                    <X className="w-4 h-4 text-stone-400" />
+                    <X className="w-4 h-4 text-text-muted" />
                   </button>
                 </div>
               </div>
             ) : (
               user.profile?.bio && (
-                <p className="text-sm text-stone-500 text-center mt-2">
+                <p className="text-sm text-text-muted text-center mt-2">
                   {user.profile.bio}
                 </p>
               )
@@ -229,10 +229,10 @@ export default function ProfilePage() {
 
             {skinUrl && (
               <div className="mt-4">
-                <p className="text-xs text-stone-400 mb-2">Скин:</p>
+                <p className="text-xs text-text-muted mb-2">Скин:</p>
                 <button
                   onClick={() => setSelectedImage(skinUrl)}
-                  className="w-full bg-white border border-stone-200 rounded overflow-hidden cursor-pointer hover:opacity-90 transition-opacity"
+                  className="w-full bg-bg-elevated border border-border rounded overflow-hidden cursor-pointer hover:opacity-90 transition-opacity"
                 >
                   <img
                     src={skinUrl}
@@ -246,28 +246,28 @@ export default function ProfilePage() {
         </div>
 
         <div className="lg:col-span-2">
-          <div className="bg-stone-50 border border-stone-200 rounded-lg p-6 mb-6">
-            <h2 className="text-lg font-semibold mb-4">Новый пост</h2>
+          <div className="bg-bg-elevated border border-border rounded-lg p-6 mb-6">
+            <h2 className="text-lg font-semibold text-text mb-4">Новый пост</h2>
             <textarea
               value={newPost}
               onChange={(e) => setNewPost(e.target.value)}
               rows={4}
               maxLength={5000}
-              className="w-full px-3 py-2 bg-white border border-stone-200 rounded-md text-stone-700 resize-none focus:outline-none focus:border-green-400"
+              className="w-full px-3 py-2 bg-bg border border-border rounded-md text-text resize-none focus:outline-none focus:border-green"
               placeholder="Напишите что-нибудь..."
             />
             <div className="flex items-center justify-between mt-2">
-              <span className="text-xs text-stone-400">
+              <span className="text-xs text-text-muted">
                 {newPost.length}/5000
               </span>
               <div className="flex items-center gap-2">
                 {postError && (
-                  <span className="text-xs text-pink-600">{postError}</span>
+                  <span className="text-xs text-pink">{postError}</span>
                 )}
                 <button
                   onClick={handlePost}
                   disabled={postLoading || !newPost.trim()}
-                  className="flex items-center gap-1 px-4 py-1 bg-green-600 hover:bg-green-700 text-white rounded text-sm transition-colors disabled:opacity-50"
+                  className="flex items-center gap-1 px-4 py-1 bg-green hover:bg-green-hover text-white rounded text-sm transition-colors disabled:opacity-50"
                 >
                   <Plus className="w-3 h-3" />
                   Опубликовать
@@ -277,19 +277,19 @@ export default function ProfilePage() {
           </div>
 
           <div className="space-y-4">
-            <h2 className="text-lg font-semibold">Посты</h2>
+            <h2 className="text-lg font-semibold text-text">Посты</h2>
             {user.posts.length === 0 ? (
-              <p className="text-stone-400 text-sm">Пока нет постов</p>
+              <p className="text-text-muted text-sm">Пока нет постов</p>
             ) : (
               user.posts.map((post) => (
                 <div
                   key={post.id}
-                  className="bg-stone-50 border border-stone-200 rounded-lg p-5"
+                  className="bg-bg-elevated border border-border rounded-lg p-5"
                 >
-                  <p className="text-stone-700 whitespace-pre-wrap text-sm">
+                  <p className="text-text whitespace-pre-wrap text-sm">
                     {post.content}
                   </p>
-                  <p className="text-xs text-stone-400 mt-3">
+                  <p className="text-xs text-text-muted mt-3">
                     {new Date(post.createdAt).toLocaleString("ru-RU")}
                   </p>
                 </div>

@@ -292,7 +292,7 @@ export default function MessengerPage() {
   if (!user) {
     return (
       <div className="flex items-center justify-center h-screen">
-        <p className="text-stone-400">Войдите для доступа к мессенджеру</p>
+        <p className="text-text-muted">Войдите для доступа к мессенджеру</p>
       </div>
     );
   }
@@ -300,37 +300,37 @@ export default function MessengerPage() {
   return (
     <div className="flex h-screen">
       {showNewConv ? (
-        <div className="w-80 border-r border-stone-200 flex flex-col bg-stone-50">
-          <div className="p-4 border-b border-stone-200 flex items-center gap-2">
+        <div className="w-80 border-r border-border flex flex-col bg-bg-secondary">
+          <div className="p-4 border-b border-border flex items-center gap-2">
             <button
               onClick={() => {
                 setShowNewConv(false);
                 setAllUsers([]);
                 setLoadingUsers(false);
               }}
-              className="p-1 hover:bg-stone-200 rounded"
+              className="p-1 hover:bg-bg-hover rounded"
             >
               <ArrowLeft className="w-4 h-4" />
             </button>
-            <h2 className="font-semibold text-sm">Новый чат</h2>
+            <h2 className="font-semibold text-sm text-text">Новый чат</h2>
           </div>
           <div className="p-3 space-y-3">
             <div className="flex items-center gap-2">
-              <label className="flex items-center gap-2 text-sm cursor-pointer">
+              <label className="flex items-center gap-2 text-sm cursor-pointer text-text">
                 <input
                   type="radio"
                   checked={!isGroup}
                   onChange={() => setIsGroup(false)}
-                  className="accent-green-600"
+                  className="accent-green"
                 />
                 Личный
               </label>
-              <label className="flex items-center gap-2 text-sm cursor-pointer">
+              <label className="flex items-center gap-2 text-sm cursor-pointer text-text">
                 <input
                   type="radio"
                   checked={isGroup}
                   onChange={() => setIsGroup(true)}
-                  className="accent-green-600"
+                  className="accent-green"
                 />
                 Группа
               </label>
@@ -341,20 +341,20 @@ export default function MessengerPage() {
                 value={groupName}
                 onChange={(e) => setGroupName(e.target.value)}
                 placeholder="Название группы"
-                className="w-full px-3 py-1.5 bg-white border border-stone-200 rounded-md text-sm focus:outline-none focus:border-green-400"
+                className="w-full px-3 py-1.5 bg-bg border border-border rounded-md text-sm text-text focus:outline-none focus:border-green"
                 maxLength={50}
               />
             )}
             <div>
-              <p className="text-xs text-stone-500 mb-2">Выберите участников:</p>
+              <p className="text-xs text-text-muted mb-2">Выберите участников:</p>
               {loadingUsers && (
-                <p className="text-xs text-stone-400">Загрузка...</p>
+                <p className="text-xs text-text-muted">Загрузка...</p>
               )}
               {allUsers.length === 0 && !loadingUsers && (
                 <div className="flex items-center gap-2 mb-2">
                   <button
                     onClick={fetchUsers}
-                    className="text-xs text-pink-600 hover:underline"
+                    className="text-xs text-pink hover:underline"
                   >
                     Загрузить список
                   </button>
@@ -362,7 +362,7 @@ export default function MessengerPage() {
               )}
               <div className="max-h-64 overflow-y-auto space-y-1">
                 {allUsers.length === 0 && !loadingUsers && (
-                  <p className="text-xs text-stone-400 py-2">Нет доступных участников</p>
+                  <p className="text-xs text-text-muted py-2">Нет доступных участников</p>
                 )}
                 {allUsers.map((u) => (
                   <button
@@ -378,14 +378,14 @@ export default function MessengerPage() {
                     }}
                     className={`w-full flex items-center gap-2 px-3 py-2 rounded-md text-sm transition-colors ${
                       selectedUsers.includes(u.id)
-                        ? "bg-pink-50 text-pink-700"
-                        : "hover:bg-stone-200 text-stone-700"
+                        ? "bg-pink-light text-pink"
+                        : "hover:bg-bg-hover text-text"
                     }`}
                   >
                     {u.profile?.avatar ? (
                       <img src={u.profile.avatar} className="w-6 h-6 rounded-full object-cover" alt="" />
                     ) : (
-                      <div className="w-6 h-6 rounded-full bg-pink-100 flex items-center justify-center text-pink-600 text-xs font-bold">
+                      <div className="w-6 h-6 rounded-full bg-pink-light flex items-center justify-center text-pink text-xs font-bold">
                         {getInitials(u.nickname)}
                       </div>
                     )}
@@ -397,7 +397,7 @@ export default function MessengerPage() {
             <button
               onClick={createConversation}
               disabled={selectedUsers.length === 0}
-              className="w-full py-2 bg-green-600 hover:bg-green-700 text-white rounded-md text-sm transition-colors disabled:opacity-50"
+              className="w-full py-2 bg-green hover:bg-green-hover text-white rounded-md text-sm transition-colors disabled:opacity-50"
             >
               Создать
             </button>
@@ -405,12 +405,12 @@ export default function MessengerPage() {
         </div>
       ) : (
         <div
-          className={`border-r border-stone-200 flex flex-col bg-stone-50 transition-all duration-200 ${
+          className={`border-r border-border flex flex-col bg-bg-secondary transition-all duration-200 ${
             chatListCollapsed ? "w-16" : "w-80"
           }`}
         >
-          <div className="p-3 border-b border-stone-200 flex items-center justify-between">
-            {!chatListCollapsed && <h2 className="font-semibold text-sm">Сообщения</h2>}
+          <div className="p-3 border-b border-border flex items-center justify-between">
+            {!chatListCollapsed && <h2 className="font-semibold text-sm text-text">Сообщения</h2>}
             <div className="flex items-center gap-1 ml-auto">
               <button
                 onClick={() => {
@@ -418,20 +418,20 @@ export default function MessengerPage() {
                   setAllUsers([]);
                   setLoadingUsers(false);
                 }}
-                className="p-1.5 hover:bg-stone-200 rounded-md transition-colors"
+                className="p-1.5 hover:bg-bg-hover rounded-md transition-colors"
                 title="Новый чат"
               >
-                <Plus className="w-4 h-4" />
+                <Plus className="w-4 h-4 text-text-muted" />
               </button>
               <button
                 onClick={() => setChatListCollapsed(!chatListCollapsed)}
-                className="p-1.5 hover:bg-stone-200 rounded-md transition-colors"
+                className="p-1.5 hover:bg-bg-hover rounded-md transition-colors"
                 title={chatListCollapsed ? "Развернуть" : "Свернуть"}
               >
                 {chatListCollapsed ? (
-                  <ChevronRight className="w-4 h-4" />
+                  <ChevronRight className="w-4 h-4 text-text-muted" />
                 ) : (
-                  <ChevronLeft className="w-4 h-4" />
+                  <ChevronLeft className="w-4 h-4 text-text-muted" />
                 )}
               </button>
             </div>
@@ -439,36 +439,36 @@ export default function MessengerPage() {
           {!chatListCollapsed && (
             <div className="flex-1 overflow-y-auto">
               {conversations.length === 0 ? (
-                <p className="text-sm text-stone-400 text-center py-8">Нет чатов</p>
+                <p className="text-sm text-text-muted text-center py-8">Нет чатов</p>
               ) : (
                 conversations.map((conv) => (
                 <button
                   key={conv.id}
                   onClick={() => selectConversation(conv.id)}
-                  className={`w-full flex items-center gap-3 px-4 py-3 text-left transition-colors border-b border-stone-100 ${
+                  className={`w-full flex items-center gap-3 px-4 py-3 text-left transition-colors border-b border-border ${
                     selectedId === conv.id
-                      ? "bg-pink-50"
-                      : "hover:bg-stone-100"
+                      ? "bg-pink-light"
+                      : "hover:bg-bg-hover"
                   }`}
                 >
                   {conv.avatar ? (
                     <img src={conv.avatar} className="w-10 h-10 rounded-full object-cover shrink-0" alt="" />
                   ) : (
-                    <div className="w-10 h-10 rounded-full bg-pink-100 flex items-center justify-center text-pink-600 font-bold shrink-0">
+                    <div className="w-10 h-10 rounded-full bg-pink-light flex items-center justify-center text-pink font-bold shrink-0">
                       {getInitials(conv.name)}
                     </div>
                   )}
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center justify-between">
-                      <span className="font-medium text-sm truncate">{conv.name}</span>
+                      <span className="font-medium text-sm text-text truncate">{conv.name}</span>
                       {conv.lastMessage && (
-                        <span className="text-xs text-stone-400 shrink-0 ml-2">
+                        <span className="text-xs text-text-muted shrink-0 ml-2">
                           {formatTime(conv.lastMessage.createdAt)}
                         </span>
                       )}
                     </div>
                     <div className="flex items-center justify-between mt-0.5">
-                      <span className="text-xs text-stone-500 truncate">
+                      <span className="text-xs text-text-muted truncate">
                         {conv.lastMessage
                           ? conv.lastMessage.image
                             ? "Изображение"
@@ -476,7 +476,7 @@ export default function MessengerPage() {
                           : "Нет сообщений"}
                       </span>
                       {conv.unread > 0 && (
-                        <span className="ml-2 bg-green-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center shrink-0">
+                        <span className="ml-2 bg-green text-white text-xs rounded-full w-5 h-5 flex items-center justify-center shrink-0">
                           {conv.unread}
                         </span>
                       )}
@@ -484,8 +484,8 @@ export default function MessengerPage() {
                   </div>
                 </button>
               ))
-            )}
-          </div>
+              )}
+            </div>
           )}
           {chatListCollapsed && (
             <div className="flex-1 overflow-y-auto py-2 px-2 space-y-1">
@@ -495,20 +495,20 @@ export default function MessengerPage() {
                   onClick={() => selectConversation(conv.id)}
                   className={`w-full flex items-center justify-center p-2 rounded-md transition-colors relative ${
                     selectedId === conv.id
-                      ? "bg-pink-50"
-                      : "hover:bg-stone-200"
+                      ? "bg-pink-light"
+                      : "hover:bg-bg-hover"
                   }`}
                   title={conv.name}
                 >
                   {conv.avatar ? (
                     <img src={conv.avatar} className="w-8 h-8 rounded-full object-cover" alt="" />
                   ) : (
-                    <div className="w-8 h-8 rounded-full bg-pink-100 flex items-center justify-center text-pink-600 text-sm font-bold">
+                    <div className="w-8 h-8 rounded-full bg-pink-light flex items-center justify-center text-pink text-sm font-bold">
                       {getInitials(conv.name)}
                     </div>
                   )}
                   {conv.unread > 0 && (
-                    <span className="absolute -top-0.5 -right-0.5 bg-green-600 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
+                    <span className="absolute -top-0.5 -right-0.5 bg-green text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
                       {conv.unread}
                     </span>
                   )}
@@ -521,36 +521,36 @@ export default function MessengerPage() {
 
       {convDetail ? (
         <div className="flex-1 flex flex-col">
-          <div className="px-6 py-3 border-b border-stone-200 flex items-center gap-3 bg-white">
+          <div className="px-6 py-3 border-b border-border flex items-center gap-3 bg-bg-elevated">
             <button
               onClick={() => setChatListCollapsed(!chatListCollapsed)}
-              className="p-1.5 hover:bg-stone-200 rounded-md transition-colors mr-2"
+              className="p-1.5 hover:bg-bg-hover rounded-md transition-colors mr-2"
               title={chatListCollapsed ? "Развернуть" : "Свернуть"}
             >
               {chatListCollapsed ? (
-                <ChevronRight className="w-4 h-4" />
+                <ChevronRight className="w-4 h-4 text-text-muted" />
               ) : (
-                <ChevronLeft className="w-4 h-4" />
+                <ChevronLeft className="w-4 h-4 text-text-muted" />
               )}
             </button>
             {convDetail.avatar ? (
               <img src={convDetail.avatar} className="w-8 h-8 rounded-full object-cover" alt="" />
             ) : (
-              <div className="w-8 h-8 rounded-full bg-pink-100 flex items-center justify-center text-pink-600 text-sm font-bold">
+              <div className="w-8 h-8 rounded-full bg-pink-light flex items-center justify-center text-pink text-sm font-bold">
                 {getInitials(convDetail.name)}
               </div>
             )}
             <div>
-              <h3 className="font-medium text-sm">{convDetail.name}</h3>
+              <h3 className="font-medium text-sm text-text">{convDetail.name}</h3>
               {convDetail.isGroup && (
-                <span className="text-xs text-stone-400">
+                <span className="text-xs text-text-muted">
                   {convDetail.participants.length} участников
                 </span>
               )}
             </div>
           </div>
 
-          <div className="flex-1 overflow-y-auto p-6 space-y-4 bg-white">
+          <div className="flex-1 overflow-y-auto p-6 space-y-4 bg-bg-elevated">
             {convDetail.messages.map((msg) => {
               const isOwn = msg.sender.id === user.id;
               return (
@@ -561,18 +561,18 @@ export default function MessengerPage() {
                         {msg.sender.profile?.avatar ? (
                           <img src={msg.sender.profile.avatar} className="w-5 h-5 rounded-full object-cover" alt="" />
                         ) : (
-                          <div className="w-5 h-5 rounded-full bg-pink-100 flex items-center justify-center text-pink-600 text-xs font-bold">
+                          <div className="w-5 h-5 rounded-full bg-pink-light flex items-center justify-center text-pink text-xs font-bold">
                             {getInitials(msg.sender.nickname)}
                           </div>
                         )}
-                        <span className="text-xs text-stone-500">{msg.sender.nickname}</span>
+                        <span className="text-xs text-text-muted">{msg.sender.nickname}</span>
                       </div>
                     )}
                     <div
                       className={`px-4 py-2 rounded-lg text-sm ${
                         isOwn
-                          ? "bg-green-600 text-white rounded-br-sm"
-                          : "bg-stone-100 text-stone-800 rounded-bl-sm"
+                          ? "bg-green text-white rounded-br-sm"
+                          : "bg-bg-hover text-text rounded-bl-sm"
                       }`}
                     >
                       {msg.content && <p className="whitespace-pre-wrap">{msg.content}</p>}
@@ -585,7 +585,7 @@ export default function MessengerPage() {
                           onClick={() => window.open(msg.image, "_blank")}
                         />
                       )}
-                      <p className={`text-xs mt-1 ${isOwn ? "text-green-100" : "text-stone-400"}`}>
+                      <p className={`text-xs mt-1 ${isOwn ? "text-green-100" : "text-text-muted"}`}>
                         {formatTime(msg.createdAt)}
                       </p>
                     </div>
@@ -597,14 +597,14 @@ export default function MessengerPage() {
           </div>
 
           {showImagePicker ? (
-            <div className="px-6 py-3 border-t border-stone-200 bg-stone-50">
+            <div className="px-6 py-3 border-t border-border bg-bg-secondary">
               <div className="flex items-center gap-2">
                 <input
                   type="text"
                   value={imageUrl}
                   onChange={(e) => setImageUrl(e.target.value)}
                   placeholder="Вставьте URL изображения..."
-                  className="flex-1 px-3 py-2 bg-white border border-stone-200 rounded-md text-sm focus:outline-none focus:border-green-400"
+                  className="flex-1 px-3 py-2 bg-bg border border-border rounded-md text-sm text-text focus:outline-none focus:border-green"
                   onKeyDown={(e) => {
                     if (e.key === "Enter") {
                       setShowImagePicker(false);
@@ -617,7 +617,7 @@ export default function MessengerPage() {
                     setShowImagePicker(false);
                     msgInputRef.current?.focus();
                   }}
-                  className="px-3 py-2 text-sm text-stone-500 hover:text-stone-700"
+                  className="px-3 py-2 text-sm text-text-muted hover:text-text"
                 >
                   Отмена
                 </button>
@@ -625,14 +625,14 @@ export default function MessengerPage() {
             </div>
           ) : null}
 
-          <div className="px-6 py-4 border-t border-stone-200 bg-white">
+          <div className="px-6 py-4 border-t border-border bg-bg-elevated">
             <div className="flex items-center gap-2">
               <button
                 onClick={() => setShowImagePicker(!showImagePicker)}
                 className={`p-2 rounded-md transition-colors ${
                   showImagePicker
-                    ? "bg-pink-50 text-pink-600"
-                    : "text-stone-400 hover:bg-stone-100 hover:text-stone-600"
+                    ? "bg-pink-light text-pink"
+                    : "text-text-muted hover:bg-bg-hover"
                 }`}
                 title="Прикрепить изображение"
               >
@@ -651,12 +651,12 @@ export default function MessengerPage() {
                 }}
                 placeholder="Написать сообщение..."
                 maxLength={5000}
-                className="flex-1 px-4 py-2 bg-stone-50 border border-stone-200 rounded-full text-sm focus:outline-none focus:border-green-400"
+                className="flex-1 px-4 py-2 bg-bg-secondary border border-border rounded-full text-sm text-text focus:outline-none focus:border-green"
               />
               <button
                 onClick={sendMessage}
                 disabled={sending || (!newMsg.trim() && !imageUrl)}
-                className="p-2 bg-green-600 hover:bg-green-700 text-white rounded-full transition-colors disabled:opacity-50 relative"
+                className="p-2 bg-green hover:bg-green-hover text-white rounded-full transition-colors disabled:opacity-50 relative"
               >
                 {sending ? (
                   <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
@@ -666,15 +666,15 @@ export default function MessengerPage() {
               </button>
             </div>
             {sendError && (
-              <p className="text-xs text-pink-600 mt-2">{sendError}</p>
+              <p className="text-xs text-pink mt-2">{sendError}</p>
             )}
           </div>
         </div>
       ) : (
-        <div className="flex-1 flex items-center justify-center bg-stone-50">
+        <div className="flex-1 flex items-center justify-center bg-bg-secondary">
           <div className="text-center">
-            <Users className="w-16 h-16 text-stone-300 mx-auto mb-4" />
-            <p className="text-stone-400">Выберите чат или создайте новый</p>
+            <Users className="w-16 h-16 text-text-muted mx-auto mb-4" />
+            <p className="text-text-muted">Выберите чат или создайте новый</p>
           </div>
         </div>
       )}
