@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Предпросмотр темы Triple-A</title>
+  <style id="theme-styles">
+    :root {
+      --color-bg: #ffffff;
+      --color-bg-secondary: #f5f5f4;
+      --color-bg-elevated: #fafaf9;
+      --color-bg-hover: #f0f0ef;
+      --color-surface: #fafaf9;
+      --color-surface-elevated: #ffffff;
+      --color-border: #e7e5e4;
+      --color-border-hover: #d6d3d1;
+      --color-text: #1c1917;
+      --color-text-muted: #78716c;
+      --color-pink: #e11d48;
+      --color-pink-hover: #be123c;
+      --color-pink-light: #fff1f2;
+      --color-green: #16a34a;
+      --color-green-hover: #15803d;
+      --color-green-light: #f0fdf4;
+      --color-amber: #d97706;
+      --color-amber-light: #fffbeb;
+      --color-accent: #3b82f6;
+      --color-accent-hover: #2563eb;
+      --color-accent-light: #eff6ff;
+    }
+
+    .dark {
+      --color-bg: #0a0a0a;
+      --color-bg-secondary: #141414;
+      --color-bg-elevated: #1a1a1a;
+      --color-bg-hover: #262626;
+      --color-surface: #141414;
+      --color-surface-elevated: #1a1a1a;
+      --color-border: #262626;
+      --color-border-hover: #404040;
+      --color-text: #fafafa;
+      --color-text-muted: #a3a3a3;
+      --color-pink: #fb7185;
+      --color-pink-hover: #fda4af;
+      --color-pink-light: #2d1216;
+      --color-green: #4ade80;
+      --color-green-hover: #22c55e;
+      --color-green-light: #052e16;
+      --color-amber: #fbbf24;
+      --color-amber-light: #422006;
+      --color-accent: #60a5fa;
+      --color-accent-hover: #3b82f6;
+      --color-accent-light: #172554;
+    }
+
+    body {
+      background-color: var(--color-bg);
+      color: var(--color-text);
+      font-family: system-ui, -apple-system, sans-serif;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    .card {
+      background-color: var(--color-bg-elevated);
+      border: 1px solid var(--color-border);
+      border-radius: 0.5rem;
+      padding: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .btn {
+      padding: 0.5rem 1rem;
+      border-radius: 0.375rem;
+      font-size: 0.875rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background-color 0.2s, color 0.2s;
+    }
+
+    .btn-primary {
+      background-color: var(--color-pink);
+      color: white;
+    }
+    .btn-primary:hover {
+      background-color: var(--color-pink-hover);
+    }
+
+    .btn-secondary {
+      background-color: var(--color-bg-hover);
+      color: var(--color-text);
+      border: 1px solid var(--color-border);
+    }
+    .btn-secondary:hover {
+      background-color: var(--color-border-hover);
+    }
+
+    .text-muted {
+      color: var(--color-text-muted);
+    }
+
+    .color-swatch {
+      width: 100%;
+      height: 60px;
+      border-radius: 0.375rem;
+      border: 1px solid var(--color-border);
+      margin-bottom: 0.5rem;
+    }
+
+    .color-item {
+      margin-bottom: 1rem;
+    }
+
+    .color-label {
+      font-size: 0.75rem;
+      color: var(--color-text-muted);
+      margin-bottom: 0.25rem;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .color-value {
+      font-family: monospace;
+      font-size: 0.7rem;
+    }
+
+    .editor {
+      width: 100%;
+      height: 300px;
+      background-color: var(--color-bg-secondary);
+      border: 1px solid var(--color-border);
+      border-radius: 0.5rem;
+      padding: 1rem;
+      color: var(--color-text);
+      font-family: monospace;
+      font-size: 0.875rem;
+      margin-top: 1rem;
+      white-space: pre;
+      overflow: auto;
+    }
+
+    .tab {
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      color: var(--color-text-muted);
+    }
+
+    .tab.active {
+      border-bottom-color: var(--color-pink);
+      color: var(--color-pink);
+    }
+  </style>
+</head>
+<body>
+  <div style="max-width: 1200px; margin: 0 auto; padding: 2rem;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+      <h1 style="font-size: 1.875rem; font-weight: bold;">Предпросмотр темы Triple-A</h1>
+      <div style="display: flex; gap: 1rem; align-items: center;">
+        <span class="text-muted" style="font-size: 0.875rem;">Текущая тема: <span id="theme-label">light</span></span>
+        <button id="toggle-theme" class="btn btn-secondary">Переключить тему</button>
+      </div>
+    </div>
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 2rem;">
+      <div class="card">
+        <h2 style="font-size: 1.25rem; font-weight: 600; margin-bottom: 1rem;">Пример интерфейса</h2>
+        
+        <div style="margin-bottom: 1rem;">
+          <h3 style="font-size: 1rem; font-weight: 500; margin-bottom: 0.5rem;">Карточка проекта</h3>
+          <div class="card" style="border-color: var(--color-pink);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+              <h4 style="font-weight: 600;">Название проекта</h4>
+              <span style="font-size: 0.75rem; padding: 0.25rem 0.5rem; background-color: var(--color-green-light); color: var(--color-green); border-radius: 9999px;">В работе</span>
+            </div>
+            <p class="text-muted" style="font-size: 0.875rem; margin-bottom: 1rem;">Описание проекта с использованием основных цветов темы.</p>
+            <div style="display: flex; gap: 0.5rem;">
+              <button class="btn btn-primary">Открыть</button>
+              <button class="btn btn-secondary">Редактировать</button>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-bottom: 1rem;">
+          <h3 style="font-size: 1rem; font-weight: 500; margin-bottom: 0.5rem;">Сообщение</h3>
+          <div style="display: flex; gap: 0.75rem; margin-bottom: 1rem;">
+            <div style="width: 2rem; height: 2rem; border-radius: 9999px; background-color: var(--color-pink-light); display: flex; align-items: center; justify-content: center; color: var(--color-pink); font-weight: bold; font-size: 0.75rem;">У</div>
+            <div style="flex: 1;">
+              <div style="font-size: 0.875rem; font-weight: 500; margin-bottom: 0.25rem;">Пользователь</div>
+              <div style="background-color: var(--color-bg-hover); color: var(--color-text); padding: 0.75rem; border-radius: 0.5rem; font-size: 0.875rem; border-radius-tl-sm;">
+                Пример сообщения в мессенджере
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <h3 style="font-size: 1rem; font-weight: 500; margin-bottom: 0.5rem;">Пост</h3>
+          <div class="card">
+            <div style="display: flex; gap: 0.75rem; margin-bottom: 0.75rem;">
+              <div style="width: 2rem; height: 2rem; border-radius: 9999px; background-color: var(--color-pink-light); display: flex; align-items: center; justify-content: center; color: var(--color-pink); font-weight: bold; font-size: 0.75rem;">А</div>
+              <div>
+                <div style="font-size: 0.875rem; font-weight: 500;">Автор поста</div>
+                <div class="text-muted" style="font-size: 0.75rem;">2 часа назад</div>
+              </div>
+            </div>
+            <p style="font-size: 0.875rem; margin-bottom: 1rem;">Текст поста с использованием основных цветов темы. Можно добавить реакции и комментарии.</p>
+            <div style="display: flex; gap: 0.5rem;">
+              <button style="font-size: 0.75rem; padding: 0.25rem 0.5rem; background-color: var(--color-bg); border: 1px solid var(--color-border); border-radius: 9999px; cursor: pointer;">❤️ 5</button>
+              <button style="font-size: 0.75rem; padding: 0.25rem 0.5rem; background-color: var(--color-bg); border: 1px solid var(--color-border); border-radius: 9999px; cursor: pointer;">Комментарии (3)</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div style="display: flex; border-bottom: 1px solid var(--color-border); margin-bottom: 1rem;">
+          <div class="tab active" onclick="switchTab('colors')">Цвета</div>
+          <div class="tab" onclick="switchTab('editor')">Редактор CSS</div>
+        </div>
+
+        <div id="colors-tab">
+          <h2 style="font-size: 1.25rem; font-weight: 600; margin-bottom: 1rem;">Цвета темы (<span id="current-theme-for-colors">light</span>)</h2>
+          
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+            <div class="color-item">
+              <div class="color-label">
+                <span>bg (фон)</span>
+                <span class="color-value" id="val-bg">#ffffff</span>
+              </div>
+              <div class="color-swatch" style="background-color: var(--color-bg);"></div>
+              <input type="color" value="#ffffff" onchange="updateColor('bg', this.value)" style="width: 100%;">
+            </div>
+
+            <div class="color-item">
+              <div class="color-label">
+                <span>bg-secondary</span>
+                <span class="color-value" id="val-bg-secondary">#f5f5f4</span>
+              </div>
+              <div class="color-swatch" style="background-color: var(--color-bg-secondary);"></div>
+              <input type="color" value="#f5f5f4" onchange="updateColor('bg-secondary', this.value)" style="width: 100%;">
+            </div>
+
+            <div class="color-item">
+              <div class="color-label">
+                <span>bg-elevated</span>
+                <span class="color-value" id="val-bg-elevated">#fafaf9</span>
+              </div>
+              <div class="color-swatch" style="background-color: var(--color-bg-elevated);"></div>
+              <input type="color" value="#fafaf9" onchange="updateColor('bg-elevated', this.value)" style="width: 100%;">
+            </div>
+
+            <div class="color-item">
+              <div class="color-label">
+                <span>text</span>
+                <span class="color-value" id="val-text">#1c1917</span>
+              </div>
+              <div class="color-swatch" style="background-color: var(--color-text);"></div>
+              <input type="color" value="#1c1917" onchange="updateColor('text', this.value)" style="width: 100%;">
+            </div>
+
+            <div class="color-item">
+              <div class="color-label">
+                <span>text-muted</span>
+                <span class="color-value" id="val-text-muted">#78716c</span>
+              </div>
+              <div class="color-swatch" style="background-color: var(--color-text-muted);"></div>
+              <input type="color" value="#78716c" onchange="updateColor('text-muted', this.value)" style="width: 100%;">
+            </div>
+
+            <div class="color-item">
+              <div class="color-label">
+                <span>border</span>
+                <span class="color-value" id="val-border">#e7e5e4</span>
+              </div>
+              <div class="color-swatch" style="background-color: var(--color-border);"></div>
+              <input type="color" value="#e7e5e4" onchange="updateColor('border', this.value)" style="width: 100%;">
+            </div>
+
+            <div class="color-item">
+              <div class="color-label">
+                <span>pink</span>
+                <span class="color-value" id="val-pink">#e11d48</span>
+              </div>
+              <div class="color-swatch" style="background-color: var(--color-pink);"></div>
+              <input type="color" value="#e11d48" onchange="updateColor('pink', this.value)" style="width: 100%;">
+            </div>
+
+            <div class="color-item">
+              <div class="color-label">
+                <span>green</span>
+                <span class="color-value" id="val-green">#16a34a</span>
+              </div>
+              <div class="color-swatch" style="background-color: var(--color-green);"></div>
+              <input type="color" value="#16a34a" onchange="updateColor('green', this.value)" style="width: 100%;">
+            </div>
+
+            <div class="color-item">
+              <div class="color-label">
+                <span>accent</span>
+                <span class="color-value" id="val-accent">#3b82f6</span>
+              </div>
+              <div class="color-swatch" style="background-color: var(--color-accent);"></div>
+              <input type="color" value="#3b82f6" onchange="updateColor('accent', this.value)" style="width: 100%;">
+            </div>
+          </div>
+        </div>
+
+        <div id="editor-tab" style="display: none;">
+          <h2 style="font-size: 1.25rem; font-weight: 600; margin-bottom: 1rem;">Редактор CSS переменных (<span id="current-theme-for-editor">light</span>)</h2>
+          <p class="text-muted" style="font-size: 0.875rem; margin-bottom: 1rem;">Измените значения CSS переменных ниже и нажмите "Применить", чтобы увидеть изменения.</p>
+          
+          <div class="editor" id="css-editor" contenteditable="true"></div>
+          
+          <div style="display: flex; gap: 1rem; margin-top: 1rem;">
+            <button class="btn btn-primary" onclick="applyCSSEditor()">Применить</button>
+            <button class="btn btn-secondary" onclick="resetCSS()">Сбросить</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2 style="font-size: 1.25rem; font-weight: 600; margin-bottom: 0.5rem;">Инструкция</h2>
+      <ul class="text-muted" style="font-size: 0.875rem; padding-left: 1.5rem;">
+        <li>Используйте кнопку "Переключить тему" чтобы переключаться между светлой и тёмной темой</li>
+        <li>Во вкладке "Цвета" вы можете изменить любой цвет с помощью color picker (только для текущей темы)</li>
+        <li>Во вкладке "Редактор CSS" вы можете редактировать CSS-код напрямую (только для текущей темы)</li>
+        <li>Когда найдёте подходящие цвета, скопируйте их из редактора CSS и обновите файл <code style="background-color: var(--color-bg-secondary); padding: 0.25rem 0.5rem; border-radius: 0.25rem;">src/app/globals.css</code></li>
+      </ul>
+    </div>
+  </div>
+
+  <script>
+    // Текущая тема
+    let currentTheme = 'light';
+
+    // Переключение темы
+    const toggleBtn = document.getElementById('toggle-theme');
+    const themeLabel = document.getElementById('theme-label');
+    const htmlElement = document.documentElement;
+
+    toggleBtn.addEventListener('click', function() {
+      if (htmlElement.classList.contains('dark')) {
+        htmlElement.classList.remove('dark');
+        currentTheme = 'light';
+        themeLabel.textContent = 'light';
+      } else {
+        htmlElement.classList.add('dark');
+        currentTheme = 'dark';
+        themeLabel.textContent = 'dark';
+      }
+      updateThemeLabels();
+      updateEditorContent();
+    });
+
+    // Обновление меток текущей темы
+    function updateThemeLabels() {
+      document.getElementById('current-theme-for-colors').textContent = currentTheme;
+      document.getElementById('current-theme-for-editor').textContent = currentTheme;
+    }
+
+    // Получение CSS-правила для текущей темы
+    function getThemeRule() {
+      const styleSheet = document.getElementById('theme-styles').sheet;
+      for (let rule of styleSheet.cssRules) {
+        if (currentTheme === 'light' && rule.selectorText === ':root') {
+          return rule;
+        } else if (currentTheme === 'dark' && rule.selectorText === '.dark') {
+          return rule;
+        }
+      }
+      return null;
+    }
+
+    // Обновление цвета только для текущей темы
+    function updateColor(variable, value) {
+      const rule = getThemeRule();
+      if (rule) {
+        rule.style.setProperty('--color-' + variable, value);
+        document.getElementById('val-' + variable).textContent = value;
+      }
+    }
+
+    // Переключение вкладок
+    function switchTab(tab) {
+      const colorsTab = document.getElementById('colors-tab');
+      const editorTab = document.getElementById('editor-tab');
+      const tabs = document.querySelectorAll('.tab');
+      
+      tabs.forEach(t => t.classList.remove('active'));
+      
+      if (tab === 'colors') {
+        colorsTab.style.display = 'block';
+        editorTab.style.display = 'none';
+        tabs[0].classList.add('active');
+      } else {
+        colorsTab.style.display = 'none';
+        editorTab.style.display = 'block';
+        tabs[1].classList.add('active');
+      }
+    }
+
+    // Обновление содержимого редактора CSS для текущей темы
+    function updateEditorContent() {
+      const rule = getThemeRule();
+      if (!rule) return;
+      
+      // Получаем все свойства стиля
+      let cssText = '';
+      for (let i = 0; i < rule.style.length; i++) {
+        const prop = rule.style[i];
+        let value = rule.style.getPropertyValue(prop);
+        // Убираем лишние пробелы
+        value = value.trim();
+        cssText += '  ' + prop + ': ' + value + ';\n';
+      }
+      
+      const selector = currentTheme === 'light' ? ':root' : '.dark';
+      const fullCSS = selector + ' {\n' + cssText + '}';
+      document.getElementById('css-editor').textContent = fullCSS;
+    }
+
+    // Применение CSS из редактора (только для текущей темы)
+    function applyCSSEditor() {
+      const cssText = document.getElementById('css-editor').textContent;
+      const rule = getThemeRule();
+      if (!rule) return;
+      
+      // Парсим CSS-текст и обновляем правило
+      // Ожидаем формат: selector { prop: value; ... }
+      const matches = cssText.match(/(\.?\w[\w-]*)\s*\{([^}]+)\}/);
+      if (!matches) return;
+      
+      const propsText = matches[2];
+      // Разбиваем на отдельные свойства
+      const propRegex = /(--[\w-]+)\s*:\s*([^;]+);?/g;
+      let match;
+      while ((match = propRegex.exec(propsText)) !== null) {
+        const prop = match[1];
+        const value = match[2].trim();
+        rule.style.setProperty(prop, value);
+        
+        // Обновляем соответствующий color picker и метку
+        const varName = prop.replace('--color-', '');
+        const valElement = document.getElementById('val-' + varName);
+        if (valElement) {
+          valElement.textContent = value;
+          // Обновляем color picker
+          const picker = document.querySelector(`input[onchange*="${varName}"]`);
+          if (picker) {
+            picker.value = value;
+          }
+        }
+      }
+      
+      alert('CSS применен для темы: ' + currentTheme);
+    }
+
+    // Сброс CSS текущей темы
+    function resetCSS() {
+      const defaultCSS = currentTheme === 'light' 
+        ? `:root {
+  --color-bg: #ffffff;
+  --color-bg-secondary: #f5f5f4;
+  --color-bg-elevated: #fafaf9;
+  --color-bg-hover: #f0f0ef;
+  --color-surface: #fafaf9;
+  --color-surface-elevated: #ffffff;
+  --color-border: #e7e5e4;
+  --color-border-hover: #d6d3d1;
+  --color-text: #1c1917;
+  --color-text-muted: #78716c;
+  --color-pink: #e11d48;
+  --color-pink-hover: #be123c;
+  --color-pink-light: #fff1f2;
+  --color-green: #16a34a;
+  --color-green-hover: #15803d;
+  --color-green-light: #f0fdf4;
+  --color-amber: #d97706;
+  --color-amber-light: #fffbeb;
+  --color-accent: #3b82f6;
+  --color-accent-hover: #2563eb;
+  --color-accent-light: #eff6ff;
+}`
+        : `.dark {
+  --color-bg: #0a0a0a;
+  --color-bg-secondary: #141414;
+  --color-bg-elevated: #1a1a1a;
+  --color-bg-hover: #262626;
+  --color-surface: #141414;
+  --color-surface-elevated: #1a1a1a;
+  --color-border: #262626;
+  --color-border-hover: #404040;
+  --color-text: #fafafa;
+  --color-text-muted: #a3a3a3;
+  --color-pink: #fb7185;
+  --color-pink-hover: #fda4af;
+  --color-pink-light: #2d1216;
+  --color-green: #4ade80;
+  --color-green-hover: #22c55e;
+  --color-green-light: #052e16;
+  --color-amber: #fbbf24;
+  --color-amber-light: #422006;
+  --color-accent: #60a5fa;
+  --color-accent-hover: #3b82f6;
+  --color-accent-light: #172554;
+}`;
+
+      const rule = getThemeRule();
+      if (!rule) return;
+      
+      // Сбрасываем все свойства
+      // Просто обновляем редактор, а потом применяем
+      document.getElementById('css-editor').textContent = defaultCSS;
+      applyCSSEditor();
+    }
+
+    // Инициализация редактора при загрузке
+    window.addEventListener('DOMContentLoaded', function() {
+      updateThemeLabels();
+      updateEditorContent();
+    });
+  </script>
+</body>
+</html>
