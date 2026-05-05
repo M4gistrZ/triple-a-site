@@ -17,6 +17,7 @@ type Project = {
   title: string;
   status: string;
   coverImage: string;
+  images: string;
   createdAt: string;
   creator: { nickname: string };
 };
