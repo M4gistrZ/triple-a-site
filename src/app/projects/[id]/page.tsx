@@ -1,0 +1,275 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import { useParams, useRouter } from "next/navigation";
+import Link from "next/link";
+import { ArrowLeft, Edit2, Trash2, X } from "lucide-react";
+import { ReferenceUploader } from "@/components/ReferenceUploader";
+import { ImageViewer } from "@/components/ImageViewer";
+
+type Project = {
+  id: string;
+  title: string;
+  description: string;
+  status: string;
+  coverImage: string;
+  images: string;
+  createdAt: string;
+  updatedAt: string;
+  creator: { nickname: string };
+};
+
+const statusLabels: Record<string, string> = {
+  planning: "Планирование",
+  "in progress": "В работе",
+  completed: "Завершён",
+  paused: "На паузе",
+};
+
+export default function ProjectDetailPage() {
+  const params = useParams();
+  const router = useRouter();
+  const [project, setProject] = useState<Project | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [editing, setEditing] = useState(false);
+  const [editData, setEditData] = useState({
+    title: "",
+    description: "",
+    status: "",
+  });
+  const [galleryImages, setGalleryImages] = useState<string[]>([]);
+  const [activeTab, setActiveTab] = useState<"desc" | "gallery">("desc");
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (params.id) {
+      fetch(`/api/projects/${params.id}`)
+        .then((r) => {
+          if (!r.ok) throw new Error("Not found");
+          return r.json();
+        })
+        .then((data) => {
+          setProject(data);
+          setEditData({
+            title: data.title,
+            description: data.description,
+            status: data.status,
+          });
+          setGalleryImages(JSON.parse(data.images || "[]"));
+        })
+        .catch(() => router.push("/projects"))
+        .finally(() => setLoading(false));
+    }
+  }, [params.id, router]);
+
+  const handleSave = async () => {
+    if (!project) return;
+    const res = await fetch(`/api/projects/${project.id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ ...editData, images: galleryImages }),
+    });
+    if (res.ok) {
+      const updated = await res.json();
+      setProject(updated);
+      setEditing(false);
+    }
+  };
+
+  const handleDelete = async () => {
+    if (!project) return;
+    if (!confirm("Удалить проект?")) return;
+    const res = await fetch(`/api/projects/${project.id}`, {
+      method: "DELETE",
+    });
+    if (res.ok) router.push("/projects");
+  };
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center p-8">
+        <p className="text-stone-400">Загрузка...</p>
+      </div>
+    );
+  }
+
+  if (!project) return null;
+
+  const images: string[] = JSON.parse(project.images || "[]");
+  const coverUrl = project.coverImage || images[0];
+
+  return (
+    <div className="p-8">
+      <div className="mb-6">
+        <Link
+          href="/projects"
+          className="flex items-center gap-2 text-sm text-stone-400 hover:text-pink-600 transition-colors"
+        >
+          <ArrowLeft className="w-4 h-4" />
+          Назад к проектам
+        </Link>
+      </div>
+
+      {editing ? (
+        <div className="max-w-2xl space-y-4">
+          <input
+            type="text"
+            value={editData.title}
+            onChange={(e) => setEditData({ ...editData, title: e.target.value })}
+            className="w-full px-3 py-2 bg-white border border-stone-200 rounded-md text-stone-800 text-xl font-bold focus:outline-none focus:border-pink-400"
+          />
+          <select
+            value={editData.status}
+            onChange={(e) => setEditData({ ...editData, status: e.target.value })}
+            className="w-full px-3 py-2 bg-white border border-stone-200 rounded-md text-stone-800 focus:outline-none focus:border-pink-400"
+          >
+            <option value="planning">Планирование</option>
+            <option value="in progress">В работе</option>
+            <option value="completed">Завершён</option>
+            <option value="paused">На паузе</option>
+          </select>
+          <textarea
+            value={editData.description}
+            onChange={(e) => setEditData({ ...editData, description: e.target.value })}
+            rows={8}
+            className="w-full px-3 py-2 bg-white border border-stone-200 rounded-md text-stone-800 focus:outline-none focus:border-pink-400 resize-none"
+          />
+          <div>
+            <label className="block text-sm font-medium text-stone-500 mb-1">
+              Галерея
+            </label>
+            <ReferenceUploader images={galleryImages} onChange={setGalleryImages} />
+          </div>
+          <div className="flex gap-2">
+            <button
+              onClick={handleSave}
+              className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-md transition-colors"
+            >
+              Сохранить
+            </button>
+            <button
+              onClick={() => setEditing(false)}
+              className="px-4 py-2 bg-stone-100 border border-stone-200 hover:bg-stone-200 text-stone-600 rounded-md transition-colors"
+            >
+              Отмена
+            </button>
+          </div>
+        </div>
+      ) : (
+        <div>
+          <div className="flex items-start justify-between mb-4">
+            <h1 className="text-3xl font-bold text-stone-800">
+              {project.title}
+            </h1>
+            <div className="flex gap-2">
+              <button
+                onClick={() => setEditing(true)}
+                className="flex items-center gap-2 px-3 py-1 text-sm bg-white border border-stone-200 hover:border-green-400 text-stone-600 rounded-md transition-colors"
+              >
+                <Edit2 className="w-3 h-3" />
+                Редактировать
+              </button>
+              <button
+                onClick={handleDelete}
+                className="flex items-center gap-2 px-3 py-1 text-sm bg-white border border-stone-200 hover:border-pink-400 text-pink-600 rounded-md transition-colors"
+              >
+                <Trash2 className="w-3 h-3" />
+                Удалить
+              </button>
+            </div>
+          </div>
+
+          <div className="flex flex-wrap gap-3 mb-6">
+            <span className="text-sm bg-green-50 text-green-700 px-3 py-1 rounded-full">
+              {statusLabels[project.status] || project.status}
+            </span>
+            <span className="text-sm text-stone-400 px-3 py-1">
+              Автор: {project.creator.nickname}
+            </span>
+            <span className="text-sm text-stone-400 px-3 py-1">
+              Создан: {new Date(project.createdAt).toLocaleDateString("ru-RU")}
+            </span>
+            <span className="text-sm text-stone-400 px-3 py-1">
+              Обновлён: {new Date(project.updatedAt).toLocaleDateString("ru-RU")}
+            </span>
+          </div>
+
+          {coverUrl && (
+            <button
+              onClick={() => setSelectedImage(coverUrl)}
+              className="mb-6 rounded-lg overflow-hidden h-64 border border-stone-200 w-full cursor-pointer hover:opacity-90 transition-opacity"
+            >
+              <img
+                src={coverUrl}
+                alt={project.title}
+                className="w-full h-full object-cover"
+              />
+            </button>
+          )}
+
+          <div className="flex gap-0 mb-6 border-b border-stone-200">
+            <button
+              onClick={() => setActiveTab("desc")}
+              className={`px-4 py-2 text-sm font-medium border-b-2 transition-colors ${
+                activeTab === "desc"
+                  ? "border-pink-600 text-pink-600"
+                  : "border-transparent text-stone-500 hover:text-stone-700"
+              }`}
+            >
+              Описание
+            </button>
+            <button
+              onClick={() => setActiveTab("gallery")}
+              className={`px-4 py-2 text-sm font-medium border-b-2 transition-colors ${
+                activeTab === "gallery"
+                  ? "border-pink-600 text-pink-600"
+                  : "border-transparent text-stone-500 hover:text-stone-700"
+              }`}
+            >
+              Галерея ({images.length})
+            </button>
+          </div>
+
+          {activeTab === "desc" ? (
+            <div className="mb-8">
+              <p className="text-stone-700 whitespace-pre-wrap">
+                {project.description}
+              </p>
+            </div>
+          ) : (
+            <div>
+              {images.length === 0 ? (
+                <p className="text-stone-400 text-sm py-8 text-center">
+                  Галерея пуста
+                </p>
+              ) : (
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                  {images.map((img, i) => (
+                    <button
+                      key={i}
+                      onClick={() => setSelectedImage(img)}
+                      className="aspect-square bg-stone-50 border border-stone-200 rounded-lg overflow-hidden group relative cursor-pointer hover:border-pink-300 transition-colors"
+                    >
+                      <img
+                        src={img}
+                        alt={`Image ${i + 1}`}
+                        className="w-full h-full object-cover group-hover:opacity-90 transition-opacity"
+                      />
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+      )}
+
+      {selectedImage && (
+        <ImageViewer
+          src={selectedImage}
+          onClose={() => setSelectedImage(null)}
+        />
+      )}
+    </div>
+  );
+}

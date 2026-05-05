@@ -1,0 +1,128 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String    @id @default(cuid())
+  nickname  String    @unique
+  password  String
+  role      String    @default("member")
+  createdAt DateTime  @default(now())
+  profile   Profile?
+  projects  Project[] @relation("ProjectCreator")
+  activity  Activity[]
+  posts     Post[]
+  comments  Comment[]
+  reactions Reaction[]
+  conversations ConversationParticipant[]
+  messages  Message[] @relation("MessageSender")
+}
+
+model Profile {
+  id        String   @id @default(cuid())
+  userId    String   @unique
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  bio       String   @default("") @db.Text
+  avatar    String   @default("")
+  skin      String   @default("")
+  updatedAt DateTime @updatedAt
+}
+
+model Post {
+  id        String    @id @default(cuid())
+  userId    String
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  content   String    @db.Text
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  comments  Comment[]
+  reactions Reaction[]
+}
+
+model Comment {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  postId    String
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  content   String   @db.Text
+  createdAt DateTime @default(now())
+}
+
+model Reaction {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  postId    String
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  emoji     String
+  createdAt DateTime @default(now())
+
+  @@unique([userId, postId, emoji])
+}
+
+model Project {
+  id          String     @id @default(cuid())
+  title       String
+  description String @db.Text
+  status      String     @default("planning")
+  creatorId   String
+  creator     User       @relation("ProjectCreator", fields: [creatorId], references: [id])
+  coverImage  String     @default("")
+  images      String @default("[]") @db.Text
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  activity    Activity[]
+}
+
+model Activity {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  projectId String?
+  project   Project? @relation(fields: [projectId], references: [id], onDelete: SetNull)
+  action    String
+  content   String   @db.Text
+  createdAt DateTime @default(now())
+}
+
+model Conversation {
+  id        String              @id @default(cuid())
+  name      String              @default("")
+  isGroup   Boolean             @default(false)
+  avatar    String              @default("")
+  createdAt DateTime            @default(now())
+  updatedAt DateTime            @updatedAt
+  participants ConversationParticipant[]
+  messages  Message[]
+}
+
+model ConversationParticipant {
+  id             String       @id @default(cuid())
+  conversationId String
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  userId         String
+  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  lastReadMsgId  String       @default("")
+  joinedAt       DateTime     @default(now())
+
+  @@unique([conversationId, userId])
+}
+
+model Message {
+  id             String       @id @default(cuid())
+  conversationId String
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  senderId       String
+  sender         User         @relation("MessageSender", fields: [senderId], references: [id])
+  content   String @db.Text
+  image          String       @default("")
+  isEdited       Boolean      @default(false)
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+}
