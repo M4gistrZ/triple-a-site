@@ -78,7 +78,7 @@ export default function ProjectDetailPage() {
     const res = await fetch(`/api/projects/${project.id}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ ...editData, images: galleryImages, relatedIds }),
+      body: JSON.stringify({ ...editData, images: galleryImages }),
     });
     if (res.ok) {
       const updated = await res.json();
