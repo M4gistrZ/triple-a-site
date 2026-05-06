@@ -75,6 +75,7 @@ model Project {
   creator     User       @relation("ProjectCreator", fields: [creatorId], references: [id])
   coverImage  String     @default("")
   images      String @default("[]") @db.Text
+  relatedIds  String @default("[]") @db.Text
   createdAt   DateTime   @default(now())
   updatedAt   DateTime   @updatedAt
   activity    Activity[]
