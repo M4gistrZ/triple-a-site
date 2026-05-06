@@ -10,14 +10,15 @@ export async function GET() {
     }
 
     const projects = await db.project.findMany({
-      include: { creator: { select: { nickname: true } },
-      orderBy: { createdAt: "desc" },
+      include: {
+        creator: { select: { nickname: true } }
+      },
+      orderBy: { createdAt: "desc" }
     });
 
-    // Parse relatedIds for each project
     const result = projects.map(p => ({
       ...p,
-      relatedIds: JSON.parse(p.relatedIds || "[]"),
+      relatedIds: JSON.parse(p.relatedIds || "[]")
     }));
 
     return NextResponse.json(result);
@@ -58,7 +59,9 @@ export async function POST(req: NextRequest) {
           relatedIds: JSON.stringify(relatedIds || []),
           creatorId: session.id,
         },
-        include: { creator: { select: { nickname: true } },
+        include: {
+          creator: { select: { nickname: true } }
+        }
       });
 
       await tx.activity.create({
@@ -72,7 +75,7 @@ export async function POST(req: NextRequest) {
 
       return {
         ...newProject,
-        relatedIds: relatedIds || [],
+        relatedIds: relatedIds || []
       };
     });
 

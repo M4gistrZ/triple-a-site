@@ -16,7 +16,9 @@ export async function GET(
 
     const project = await db.project.findUnique({
       where: { id },
-      include: { creator: { select: { nickname: true } } },
+      include: {
+        creator: { select: { nickname: true } }
+      },
     });
 
     if (!project) {
@@ -25,7 +27,7 @@ export async function GET(
 
     const result = {
       ...project,
-      relatedIds: JSON.parse(project.relatedIds || "[]"),
+      relatedIds: JSON.parse(project.relatedIds || "[]")
     };
 
     return NextResponse.json(result);
@@ -72,7 +74,9 @@ export async function PATCH(
           ...(images !== undefined && { images: JSON.stringify(images) }),
           ...(relatedIds !== undefined && { relatedIds: JSON.stringify(relatedIds) }),
         },
-        include: { creator: { select: { nickname: true } } },
+        include: {
+          creator: { select: { nickname: true } }
+        }
       });
 
       await tx.activity.create({
@@ -86,7 +90,7 @@ export async function PATCH(
 
       return {
         ...result,
-        relatedIds: relatedIds !== undefined ? relatedIds : JSON.parse(result.relatedIds || "[]"),
+        relatedIds: relatedIds !== undefined ? relatedIds : JSON.parse(result.relatedIds || "[]")
       };
     });
 
