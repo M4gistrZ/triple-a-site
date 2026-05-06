@@ -16,14 +16,19 @@ export async function GET(
 
     const project = await db.project.findUnique({
       where: { id },
-      include: { creator: { select: { nickname: true } } },
+      include: { creator: { select: { nickname: true } },
     });
 
     if (!project) {
       return NextResponse.json({ error: "Project not found" }, { status: 404 });
     }
 
-    return NextResponse.json(project);
+    const result = {
+      ...project,
+      relatedIds: JSON.parse(project.relatedIds || "[]"),
+    };
+
+    return NextResponse.json(result);
   } catch (error) {
     console.error("Error fetching project:", error);
     return NextResponse.json(
@@ -45,7 +50,7 @@ export async function PATCH(
 
     const { id } = await params;
     const body = await req.json();
-    const { title, description, status, images, coverImage, galleryImages } = body;
+    const { title, description, status, images, coverImage, galleryImages, relatedIds } = body;
 
     const project = await db.project.findUnique({ where: { id } });
     if (!project) {
@@ -65,6 +70,7 @@ export async function PATCH(
           ...(status && { status }),
           ...(coverImage !== undefined && { coverImage }),
           ...(images !== undefined && { images: JSON.stringify(images) }),
+          ...(relatedIds !== undefined && { relatedIds: JSON.stringify(relatedIds) }),
         },
         include: { creator: { select: { nickname: true } } },
       });
@@ -78,7 +84,10 @@ export async function PATCH(
         },
       });
 
-      return result;
+      return {
+        ...result,
+        relatedIds: JSON.parse(result.relatedIds || "[]"),
+      };
     });
 
     return NextResponse.json(updated);

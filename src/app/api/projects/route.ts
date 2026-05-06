@@ -10,9 +10,17 @@ export async function GET() {
     }
 
     const projects = await db.project.findMany({
-      include: { creator: { select: { nickname: true } } },
+      include: { creator: { select: { nickname: true } },
       orderBy: { createdAt: "desc" },
     });
+
+    // Parse relatedIds for each project
+    const result = projects.map(p => ({
+      ...p,
+      relatedIds: JSON.parse(p.relatedIds || "[]"),
+    }));
+
+    return NextResponse.json(result);
 
     return NextResponse.json(projects);
   } catch (error) {
@@ -32,7 +40,7 @@ export async function POST(req: NextRequest) {
     }
 
     const body = await req.json();
-    const { title, description, status, images, coverImage } = body;
+    const { title, description, status, images, coverImage, relatedIds } = body;
 
     if (!title || !description) {
       return NextResponse.json(
@@ -49,9 +57,10 @@ export async function POST(req: NextRequest) {
           status: status || "planning",
           coverImage: coverImage || "",
           images: JSON.stringify(images || []),
+          relatedIds: JSON.stringify(relatedIds || []),
           creatorId: session.id,
         },
-        include: { creator: { select: { nickname: true } } },
+        include: { creator: { select: { nickname: true } },
       });
 
       await tx.activity.create({
@@ -63,7 +72,10 @@ export async function POST(req: NextRequest) {
         },
       });
 
-      return newProject;
+      return {
+        ...newProject,
+        relatedIds: relatedIds || [],
+      };
     });
 
     return NextResponse.json(project, { status: 201 });
