@@ -156,25 +156,54 @@ export default function ProjectDetailPage() {
             <label className="block text-sm font-medium text-text-muted mb-1">
               Связанные проекты
             </label>
+            {editData.relatedIds && editData.relatedIds.length > 0 && (
+              <div className="flex flex-wrap gap-2 mb-2">
+                {editData.relatedIds.map(id => {
+                  const p = allProjects.find(x => x.id === id);
+                  return p ? (
+                    <span
+                      key={id}
+                      className="inline-flex items-center gap-1 px-2 py-1 bg-pink-light text-pink text-sm rounded-full"
+                    >
+                      {p.title}
+                      <button
+                        type="button"
+                        onClick={() => setEditData({
+                          ...editData,
+                          relatedIds: editData.relatedIds.filter(x => x !== id)
+                        })}
+                        className="hover:text-pink-hover"
+                      >
+                        <X className="w-3 h-3" />
+                      </button>
+                    </span>
+                  ) : null;
+                })}
+              </div>
+            )}
             <select
-              multiple
-              value={editData.relatedIds || []}
+              value=""
               onChange={(e) => {
-                const selected = Array.from(e.target.selectedOptions, option => option.value);
-                setEditData({ ...editData, relatedIds: selected });
+                if (e.target.value) {
+                  const newId = e.target.value;
+                  if (!editData.relatedIds?.includes(newId)) {
+                    setEditData({
+                      ...editData,
+                      relatedIds: [...(editData.relatedIds || []), newId]
+                    });
+                  }
+                  e.target.value = "";
+                }
               }}
               className="w-full px-3 py-2 bg-bg border border-border rounded-md text-text focus:outline-none focus:border-green text-sm"
-              size={Math.min(allProjects.length, 5)}
             >
-              {allProjects.map((p) => (
-                <option key={p.id} value={p.id}>
-                  {p.title}
-                </option>
-              ))}
+              <option value="">+ Добавить связанный проект</option>
+              {allProjects
+                .filter(p => !editData.relatedIds?.includes(p.id))
+                .map(p => (
+                  <option key={p.id} value={p.id}>{p.title}</option>
+                ))}
             </select>
-            <p className="text-xs text-text-muted mt-1">
-              Удерживайте Ctrl для выбора нескольких проектов
-            </p>
           </div>
           <div className="flex gap-2">
             <button

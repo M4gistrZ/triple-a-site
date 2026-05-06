@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { X } from "lucide-react";
 import { ReferenceUploader } from "@/components/ReferenceUploader";
 import { FileUpload } from "@/components/FileUpload";
 
@@ -26,6 +27,16 @@ export default function NewProjectPage() {
       .catch(() => setAllProjects([]));
   }, []);
 
+  const toggleRelated = (id: string) => {
+    setRelatedIds(prev =>
+      prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id]
+    );
+  };
+
+  const removeRelated = (id: string) => {
+    setRelatedIds(prev => prev.filter(x => x !== id));
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -35,7 +46,7 @@ export default function NewProjectPage() {
       const res = await fetch("/api/projects", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ title, description, status, images, coverImage }),
+        body: JSON.stringify({ title, description, status, images, coverImage, relatedIds }),
       });
 
       if (!res.ok) {
@@ -125,25 +136,45 @@ export default function NewProjectPage() {
             <label className="block text-sm font-medium text-text-muted mb-1">
               Связанные проекты
             </label>
+            {relatedIds.length > 0 && (
+              <div className="flex flex-wrap gap-2 mb-2">
+                {relatedIds.map(id => {
+                  const p = allProjects.find(x => x.id === id);
+                  return p ? (
+                    <span
+                      key={id}
+                      className="inline-flex items-center gap-1 px-2 py-1 bg-pink-light text-pink text-sm rounded-full"
+                    >
+                      {p.title}
+                      <button
+                        type="button"
+                        onClick={() => removeRelated(id)}
+                        className="hover:text-pink-hover"
+                      >
+                        <X className="w-3 h-3" />
+                      </button>
+                    </span>
+                  ) : null;
+                })}
+              </div>
+            )}
             <select
-              multiple
-              value={relatedIds}
+              value=""
               onChange={(e) => {
-                const selected = Array.from(e.target.selectedOptions, option => option.value);
-                setRelatedIds(selected);
+                if (e.target.value) {
+                  toggleRelated(e.target.value);
+                  e.target.value = "";
+                }
               }}
               className="w-full px-3 py-2 bg-bg border border-border rounded-md text-text focus:outline-none focus:border-green text-sm"
-              size={Math.min(allProjects.length, 5)}
             >
-              {allProjects.map((p) => (
-                <option key={p.id} value={p.id}>
-                  {p.title}
-                </option>
-              ))}
+              <option value="">+ Добавить связанный проект</option>
+              {allProjects
+                .filter(p => !relatedIds.includes(p.id))
+                .map(p => (
+                  <option key={p.id} value={p.id}>{p.title}</option>
+                ))}
             </select>
-            <p className="text-xs text-text-muted mt-1">
-              Удерживайте Ctrl для выбора нескольких проектов
-            </p>
           </div>
 
           {error && <p className="text-sm text-pink">{error}</p>}
