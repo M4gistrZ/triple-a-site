@@ -31,10 +31,21 @@ export async function getSession() {
 
   try {
     const { payload } = await jwtVerify(token, secret);
+    const userId = payload.id as string;
+    
+    // Always fetch fresh role from DB
+    const { db } = await import("@/lib/db");
+    const user = await db.user.findUnique({
+      where: { id: userId },
+      select: { id: true, nickname: true, role: true },
+    });
+    
+    if (!user) return null;
+    
     return {
-      id: payload.id as string,
-      nickname: payload.nickname as string,
-      role: (payload.role as string) || "member",
+      id: user.id,
+      nickname: user.nickname,
+      role: user.role,
     };
   } catch {
     return null;
