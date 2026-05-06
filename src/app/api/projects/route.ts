@@ -21,8 +21,6 @@ export async function GET() {
     }));
 
     return NextResponse.json(result);
-
-    return NextResponse.json(projects);
   } catch (error) {
     console.error("Error fetching projects:", error);
     return NextResponse.json(

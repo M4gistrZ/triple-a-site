@@ -16,7 +16,7 @@ export async function GET(
 
     const project = await db.project.findUnique({
       where: { id },
-      include: { creator: { select: { nickname: true } },
+      include: { creator: { select: { nickname: true } } },
     });
 
     if (!project) {
@@ -86,7 +86,7 @@ export async function PATCH(
 
       return {
         ...result,
-        relatedIds: JSON.parse(result.relatedIds || "[]"),
+        relatedIds: relatedIds !== undefined ? relatedIds : JSON.parse(result.relatedIds || "[]"),
       };
     });
 
