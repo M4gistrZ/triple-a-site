@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { useAuth } from "@/components/AuthProvider";
+import { Trash2 } from "lucide-react";
 
 type Activity = {
   id: string;
@@ -37,11 +39,12 @@ const statusLabels: Record<string, string> = {
 };
 
 export default function DashboardPage() {
+  const { user } = useAuth();
   const [activity, setActivity] = useState<Activity[]>([]);
   const [recentProjects, setRecentProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
+  const loadData = () => {
     fetch("/api/activity")
       .then((r) => (r.ok ? r.json() : []))
       .then(setActivity)
@@ -52,7 +55,19 @@ export default function DashboardPage() {
       .then((projects) => setRecentProjects(projects.slice(0, 5)))
       .catch(() => setRecentProjects([]))
       .finally(() => setLoading(false));
+  };
+
+  useEffect(() => {
+    loadData();
   }, []);
+
+  const deleteActivity = async (id: string) => {
+    if (!confirm("Удалить эту запись активности?")) return;
+    const res = await fetch(`/api/activity/${id}`, { method: "DELETE" });
+    if (res.ok) {
+      setActivity((prev) => prev.filter((a) => a.id !== id));
+    }
+  };
 
   if (loading) {
     return (
@@ -123,15 +138,26 @@ export default function DashboardPage() {
               {activity.slice(0, 10).map((item) => (
                 <div
                   key={item.id}
-                  className="p-3 bg-bg-elevated border border-border rounded-md"
+                  className="p-3 bg-bg-elevated border border-border rounded-md flex items-start justify-between group"
                 >
-                  <p className="text-sm text-text">
-                    <span className="text-pink">{item.user.nickname}</span>{" "}
-                    {item.content}
-                  </p>
-                  <p className="text-xs text-text-muted mt-1">
-                    {new Date(item.createdAt).toLocaleString("ru-RU")}
-                  </p>
+                  <div>
+                    <p className="text-sm text-text">
+                      <span className="text-pink">{item.user.nickname}</span>{' '}
+                      {item.content}
+                    </p>
+                    <p className="text-xs text-text-muted mt-1">
+                      {new Date(item.createdAt).toLocaleString("ru-RU")}
+                    </p>
+                  </div>
+                  {user?.role === "admin" && (
+                    <button
+                      onClick={() => deleteActivity(item.id)}
+                      className="p-1 text-text-muted hover:text-pink transition-colors opacity-0 group-hover:opacity-100"
+                      title="Удалить"
+                    >
+                      <Trash2 className="w-3 h-3" />
+                    </button>
+                  )}
                 </div>
               ))}
             </div>

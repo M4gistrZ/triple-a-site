@@ -17,7 +17,7 @@ export async function verifyPassword(
   return bcrypt.compare(password, hash);
 }
 
-export async function createToken(payload: { id: string; nickname: string }) {
+export async function createToken(payload: { id: string; nickname: string; role: string }) {
   return new SignJWT(payload)
     .setProtectedHeader({ alg: "HS256" })
     .setExpirationTime("7d")
@@ -31,7 +31,11 @@ export async function getSession() {
 
   try {
     const { payload } = await jwtVerify(token, secret);
-    return payload as { id: string; nickname: string };
+    return {
+      id: payload.id as string,
+      nickname: payload.nickname as string,
+      role: (payload.role as string) || "member",
+    };
   } catch {
     return null;
   }

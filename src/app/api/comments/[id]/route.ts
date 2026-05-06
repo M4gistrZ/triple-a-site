@@ -18,7 +18,7 @@ export async function DELETE(
     return NextResponse.json({ error: "Comment not found" }, { status: 404 });
   }
 
-  if (comment.userId !== session.id) {
+  if (comment.userId !== session.id && session.role !== "admin") {
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
 

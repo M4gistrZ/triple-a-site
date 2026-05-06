@@ -124,18 +124,31 @@ export default function PostsPage() {
     }
   };
 
-  const deleteComment = async (commentId: string) => {
+  const deletePost = async (postId: string) => {
+    if (!confirm("Удалить этот пост?")) return;
+    const res = await fetch(`/api/posts/${postId}`, { method: "DELETE" });
+    if (res.ok) {
+      setPosts((prev) => prev.filter((p) => p.id !== postId));
+    }
+  };
+
+  const deleteComment = async (commentId: string, postId: string) => {
     const res = await fetch(`/api/comments/${commentId}`, {
       method: "DELETE",
     });
     if (res.ok) {
       setComments((prev) => {
         const updated = { ...prev };
-        Object.keys(updated).forEach((postId) => {
-          updated[postId] = updated[postId]?.filter((c) => c.id !== commentId) || [];
+        Object.keys(updated).forEach((pid) => {
+          updated[pid] = updated[pid]?.filter((c) => c.id !== commentId) || [];
         });
         return updated;
       });
+      setPosts((prev) =>
+        prev.map((p) =>
+          p.id === postId ? { ...p, _count: { ...p._count, comments: Math.max(0, p._count.comments - 1) } } : p
+        )
+      );
     }
   };
 
@@ -258,6 +271,15 @@ export default function PostsPage() {
                 </div>
 
                 <div className="flex items-center gap-4">
+                  {(user?.id === post.user.id || user?.role === "admin") && (
+                    <button
+                      onClick={() => deletePost(post.id)}
+                      className="text-xs text-text-muted hover:text-pink transition-colors"
+                      title="Удалить пост"
+                    >
+                      <Trash2 className="w-3 h-3" />
+                    </button>
+                  )}
                   <button
                     onClick={() => loadComments(post.id)}
                     className="text-xs text-text-muted hover:text-pink transition-colors"
@@ -298,10 +320,10 @@ export default function PostsPage() {
                               {comment.content}
                             </p>
                           </div>
-                          <button
-                            onClick={() => deleteComment(comment.id)}
-                            className="p-1 text-text-muted hover:text-pink transition-colors"
-                          >
+                           <button
+                             onClick={() => deleteComment(comment.id, post.id)}
+                             className="p-1 text-text-muted hover:text-pink transition-colors"
+                           >
                             <Trash2 className="w-3 h-3" />
                           </button>
                         </div>

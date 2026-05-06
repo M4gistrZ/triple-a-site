@@ -83,17 +83,22 @@ export function Sidebar() {
       <div className="p-3 border-t border-border">
         {!collapsed ? (
           <div className="space-y-2">
-            {user && (
-              <Link
-                href={`/profile/${user.id}`}
-                className="flex items-center gap-2 px-3 py-2 rounded-md text-sm text-text-muted hover:bg-bg-hover transition-colors"
-              >
-                <div className="w-6 h-6 rounded-full bg-pink-light flex items-center justify-center text-pink text-xs font-bold">
-                  {user.nickname.charAt(0).toUpperCase()}
-                </div>
-                <span className="truncate">{user.nickname}</span>
-              </Link>
-            )}
+          {user && (
+                <Link
+                  href={`/profile/${user.id}`}
+                  className="flex items-center gap-2 px-3 py-2 rounded-md text-sm text-text-muted hover:bg-bg-hover transition-colors"
+                >
+                  <div className="w-6 h-6 rounded-full bg-pink-light flex items-center justify-center text-pink text-xs font-bold">
+                    {user.nickname.charAt(0).toUpperCase()}
+                  </div>
+                  <span className="truncate">{user.nickname}</span>
+                  {user.role === "admin" && (
+                    <span className="text-[10px] px-1.5 py-0.5 bg-pink text-white rounded">
+                      Admin
+                    </span>
+                  )}
+                </Link>
+              )}
             <button
               onClick={logout}
               className="w-full text-left px-3 py-2 text-sm text-text-muted hover:bg-bg-hover rounded-md transition-colors"

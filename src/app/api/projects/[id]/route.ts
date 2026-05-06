@@ -52,6 +52,10 @@ export async function PATCH(
       return NextResponse.json({ error: "Project not found" }, { status: 404 });
     }
 
+    if (project.creatorId !== session.id && session.role !== "admin") {
+      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+    }
+
     const updated = await db.$transaction(async (tx) => {
       const result = await tx.project.update({
         where: { id },
@@ -102,6 +106,10 @@ export async function DELETE(
     const project = await db.project.findUnique({ where: { id } });
     if (!project) {
       return NextResponse.json({ error: "Project not found" }, { status: 404 });
+    }
+
+    if (project.creatorId !== session.id && session.role !== "admin") {
+      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
 
     await db.$transaction(async (tx) => {

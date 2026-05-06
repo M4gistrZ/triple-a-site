@@ -26,7 +26,7 @@ export async function POST(req: NextRequest) {
       data: { nickname, password: hashedPassword },
     });
 
-    const token = await createToken({ id: user.id, nickname: user.nickname });
+    const token = await createToken({ id: user.id, nickname: user.nickname, role: user.role });
     await setSession(token);
 
     return NextResponse.json({

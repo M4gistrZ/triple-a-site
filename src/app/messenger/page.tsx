@@ -141,6 +141,10 @@ export default function MessengerPage() {
             })
           );
         }
+        if (evt.type === "messageDeleted") {
+          const deletedMsgId = (evt.data as { id: string }).id;
+          setConvDetail((prev) => prev ? { ...prev, messages: prev.messages.filter((m) => m.id !== deletedMsgId) } : null);
+        }
       } catch {
         /* keepalive or parse error */
       }
@@ -554,43 +558,58 @@ export default function MessengerPage() {
             {convDetail.messages.map((msg) => {
               const isOwn = msg.sender.id === user.id;
               return (
-                <div key={msg.id} className={`flex ${isOwn ? "justify-end" : "justify-start"}`}>
-                  <div className={`max-w-md ${isOwn ? "order-2" : ""}`}>
-                    {!isOwn && (
-                      <div className="flex items-center gap-2 mb-1">
-                        {msg.sender.profile?.avatar ? (
-                          <img src={msg.sender.profile.avatar} className="w-5 h-5 rounded-full object-cover" alt="" />
-                        ) : (
-                          <div className="w-5 h-5 rounded-full bg-pink-light flex items-center justify-center text-pink text-xs font-bold">
-                            {getInitials(msg.sender.nickname)}
-                          </div>
-                        )}
-                        <span className="text-xs text-text-muted">{msg.sender.nickname}</span>
-                      </div>
-                    )}
-                    <div
-                      className={`px-4 py-2 rounded-lg text-sm ${
-                        isOwn
-                          ? "bg-green text-white rounded-br-sm"
-                          : "bg-bg-hover text-text rounded-bl-sm"
-                      }`}
-                    >
-                      {msg.content && <p className="whitespace-pre-wrap">{msg.content}</p>}
-                      {msg.image && (
-                        <img
-                          src={msg.image}
-                          alt=""
-                          className="mt-2 max-w-full rounded-md cursor-pointer hover:opacity-90 transition-opacity"
-                          style={{ maxHeight: "300px", objectFit: "contain" }}
-                          onClick={() => window.open(msg.image, "_blank")}
-                        />
-                      )}
-                      <p className={`text-xs mt-1 ${isOwn ? "text-green-100" : "text-text-muted"}`}>
-                        {formatTime(msg.createdAt)}
-                      </p>
-                    </div>
-                  </div>
-                </div>
+                   <div key={msg.id} className={`flex ${isOwn ? "justify-end" : "justify-start"} group`}>
+                     {!isOwn && (
+                       <div className="flex items-center gap-2 mr-2">
+                         {msg.sender.profile?.avatar ? (
+                           <img src={msg.sender.profile.avatar} className="w-5 h-5 rounded-full object-cover" alt="" />
+                         ) : (
+                           <div className="w-5 h-5 rounded-full bg-pink-light flex items-center justify-center text-pink text-xs font-bold">
+                             {getInitials(msg.sender.nickname)}
+                           </div>
+                         )}
+                         <span className="text-xs text-text-muted">{msg.sender.nickname}</span>
+                       </div>
+                     )}
+                     <div className={`max-w-md ${isOwn ? "order-1" : ""}`}>
+                       <div
+                         className={`px-4 py-2 rounded-lg text-sm ${
+                           isOwn
+                             ? "bg-green text-white rounded-br-sm"
+                             : "bg-bg-hover text-text rounded-bl-sm"
+                         }`}
+                       >
+                         {msg.content && <p className="whitespace-pre-wrap">{msg.content}</p>}
+                         {msg.image && (
+                           <img
+                             src={msg.image}
+                             alt=""
+                             className="mt-2 max-w-full rounded-md cursor-pointer hover:opacity-90 transition-opacity"
+                             style={{ maxHeight: "300px", objectFit: "contain" }}
+                             onClick={() => window.open(msg.image, "_blank")}
+                           />
+                         )}
+                         <p className={`text-xs mt-1 ${isOwn ? "text-green-100" : "text-text-muted"}`}>
+                           {formatTime(msg.createdAt)}
+                         </p>
+                       </div>
+                     </div>
+                     {(isOwn || user?.role === "admin") && (
+                       <button
+                         onClick={async () => {
+                           if (!confirm("Удалить сообщение?")) return;
+                           const res = await fetch(`/api/messages/${msg.id}`, { method: "DELETE" });
+                           if (res.ok) {
+                             setConvDetail((prev) => prev ? { ...prev, messages: prev.messages.filter((m) => m.id !== msg.id) } : null);
+                           }
+                         }}
+                         className={`p-1 text-text-muted hover:text-pink transition-colors ${isOwn ? "order-0 mr-1" : "ml-1"} opacity-0 group-hover:opacity-100`}
+                         title="Удалить"
+                       >
+                         ✕
+                       </button>
+                     )}
+                   </div>
               );
             })}
             <div ref={messagesEndRef} />

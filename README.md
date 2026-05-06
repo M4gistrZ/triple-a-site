@@ -103,6 +103,7 @@ Server runs at `http://localhost:3000` with Turbopack for fast rebuilds.
 ```env
 DATABASE_URL="postgresql://..."       # Your PostgreSQL connection string
 JWT_SECRET="your-random-secret-key"   # Used for signing JWT tokens
+ADMIN_PASSWORD="your-admin-password"  # Password to get admin rights (set this!)
 CLOUDINARY_CLOUD_NAME="..."           # From Cloudinary dashboard
 CLOUDINARY_API_KEY="..."              # From Cloudinary dashboard
 CLOUDINARY_API_SECRET="..."           # From Cloudinary dashboard
