@@ -14,6 +14,7 @@ type Project = {
   status: string;
   coverImage: string;
   images: string;
+  relatedIds: string[];
   createdAt: string;
   updatedAt: string;
   creator: { nickname: string };
@@ -36,10 +37,19 @@ export default function ProjectDetailPage() {
     title: "",
     description: "",
     status: "",
+    relatedIds: [] as string[],
   });
   const [galleryImages, setGalleryImages] = useState<string[]>([]);
+  const [allProjects, setAllProjects] = useState<{ id: string; title: string }[]>([]);
   const [activeTab, setActiveTab] = useState<"desc" | "gallery">("desc");
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
+
+  useEffect(() => {
+    fetch("/api/projects")
+      .then((r) => (r.ok ? r.json() : []))
+      .then((data) => setAllProjects(Array.isArray(data) ? data.filter((p: { id: string }) => p.id !== params.id) : []))
+      .catch(() => setAllProjects([]));
+  }, [params.id]);
 
   useEffect(() => {
     if (params.id) {
@@ -54,6 +64,7 @@ export default function ProjectDetailPage() {
             title: data.title,
             description: data.description,
             status: data.status,
+            relatedIds: data.relatedIds || [],
           });
           setGalleryImages(JSON.parse(data.images || "[]"));
         })
@@ -67,7 +78,7 @@ export default function ProjectDetailPage() {
     const res = await fetch(`/api/projects/${project.id}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ ...editData, images: galleryImages }),
+      body: JSON.stringify({ ...editData, images: galleryImages, relatedIds }),
     });
     if (res.ok) {
       const updated = await res.json();
@@ -139,6 +150,31 @@ export default function ProjectDetailPage() {
               Галерея
             </label>
             <ReferenceUploader images={galleryImages} onChange={setGalleryImages} />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-text-muted mb-1">
+              Связанные проекты
+            </label>
+            <select
+              multiple
+              value={editData.relatedIds || []}
+              onChange={(e) => {
+                const selected = Array.from(e.target.selectedOptions, option => option.value);
+                setEditData({ ...editData, relatedIds: selected });
+              }}
+              className="w-full px-3 py-2 bg-bg border border-border rounded-md text-text focus:outline-none focus:border-green text-sm"
+              size={Math.min(allProjects.length, 5)}
+            >
+              {allProjects.map((p) => (
+                <option key={p.id} value={p.id}>
+                  {p.title}
+                </option>
+              ))}
+            </select>
+            <p className="text-xs text-text-muted mt-1">
+              Удерживайте Ctrl для выбора нескольких проектов
+            </p>
           </div>
           <div className="flex gap-2">
             <button
@@ -235,6 +271,28 @@ export default function ProjectDetailPage() {
               <p className="text-text whitespace-pre-wrap">
                 {project.description}
               </p>
+              
+              {project.relatedIds && project.relatedIds.length > 0 && (
+                <div className="mt-6">
+                  <h3 className="text-sm font-medium text-text-muted mb-2">
+                    Связанные проекты
+                  </h3>
+                  <div className="flex flex-wrap gap-2">
+                    {project.relatedIds.map((relId: string) => {
+                      const relProject = allProjects.find(p => p.id === relId);
+                      return relProject ? (
+                        <Link
+                          key={relId}
+                          href={`/projects/${relId}`}
+                          className="px-3 py-1.5 bg-bg-elevated border border-border rounded-md text-sm text-text hover:border-pink transition-colors"
+                        >
+                          {relProject.title}
+                        </Link>
+                      ) : null;
+                    })}
+                  </div>
+                </div>
+              )}
             </div>
           ) : (
             <div>

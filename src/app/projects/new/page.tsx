@@ -1,9 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { ReferenceUploader } from "@/components/ReferenceUploader";
 import { FileUpload } from "@/components/FileUpload";
+
+type Project = { id: string; title: string };
 
 export default function NewProjectPage() {
   const router = useRouter();
@@ -14,6 +16,15 @@ export default function NewProjectPage() {
   const [images, setImages] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [allProjects, setAllProjects] = useState<Project[]>([]);
+  const [relatedIds, setRelatedIds] = useState<string[]>([]);
+
+  useEffect(() => {
+    fetch("/api/projects")
+      .then((r) => (r.ok ? r.json() : []))
+      .then((data) => setAllProjects(Array.isArray(data) ? data : []))
+      .catch(() => setAllProjects([]));
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -108,6 +119,31 @@ export default function NewProjectPage() {
               Галерея
             </label>
             <ReferenceUploader images={images} onChange={setImages} />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-text-muted mb-1">
+              Связанные проекты
+            </label>
+            <select
+              multiple
+              value={relatedIds}
+              onChange={(e) => {
+                const selected = Array.from(e.target.selectedOptions, option => option.value);
+                setRelatedIds(selected);
+              }}
+              className="w-full px-3 py-2 bg-bg border border-border rounded-md text-text focus:outline-none focus:border-green text-sm"
+              size={Math.min(allProjects.length, 5)}
+            >
+              {allProjects.map((p) => (
+                <option key={p.id} value={p.id}>
+                  {p.title}
+                </option>
+              ))}
+            </select>
+            <p className="text-xs text-text-muted mt-1">
+              Удерживайте Ctrl для выбора нескольких проектов
+            </p>
           </div>
 
           {error && <p className="text-sm text-pink">{error}</p>}
