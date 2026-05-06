@@ -3,7 +3,7 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 
-type User = { id: string; nickname: string; role: string; createdAt?: string } | null;
+type User = { id: string; nickname: string; role: string; createdAt?: string; profile?: { avatar: string } | null } | null;
 
 const AuthContext = createContext<{
   user: User;

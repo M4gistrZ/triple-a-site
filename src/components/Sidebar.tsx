@@ -88,9 +88,17 @@ export function Sidebar() {
                   href={`/profile/${user.id}`}
                   className="flex items-center gap-2 px-3 py-2 rounded-md text-sm text-text-muted hover:bg-bg-hover transition-colors"
                 >
-                  <div className="w-6 h-6 rounded-full bg-pink-light flex items-center justify-center text-pink text-xs font-bold">
-                    {user.nickname.charAt(0).toUpperCase()}
-                  </div>
+                  {user.profile?.avatar ? (
+                    <img
+                      src={user.profile.avatar}
+                      alt={user.nickname}
+                      className="w-6 h-6 rounded-full object-cover"
+                    />
+                  ) : (
+                    <div className="w-6 h-6 rounded-full bg-pink-light flex items-center justify-center text-pink text-xs font-bold">
+                      {user.nickname.charAt(0).toUpperCase()}
+                    </div>
+                  )}
                   <span className="truncate">{user.nickname}</span>
                   {user.role === "admin" && (
                     <span className="text-[10px] px-1.5 py-0.5 bg-pink text-white rounded">
