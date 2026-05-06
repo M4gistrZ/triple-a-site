@@ -59,9 +59,9 @@ export default function MembersPage() {
                 <span className="font-medium text-text">
                   {member.nickname}
                 </span>
-                {member.role === "admin" && (
-                  <Shield className="w-4 h-4 text-pink" title="Админ" />
-                )}
+                  {member.role === "admin" && (
+                    <Shield className="w-4 h-4 text-pink" />
+                  )}
               </div>
               <div className="flex items-center gap-4">
                 <span className="text-sm text-text-muted">

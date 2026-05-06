@@ -423,7 +423,6 @@ export default function MessengerPage() {
                   setLoadingUsers(false);
                 }}
                 className="p-1.5 hover:bg-bg-hover rounded-md transition-colors"
-                title="Новый чат"
               >
                 <Plus className="w-4 h-4 text-text-muted" />
               </button>

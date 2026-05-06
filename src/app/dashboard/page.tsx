@@ -153,7 +153,6 @@ export default function DashboardPage() {
                     <button
                       onClick={() => deleteActivity(item.id)}
                       className="p-1 text-text-muted hover:text-pink transition-colors opacity-0 group-hover:opacity-100"
-                      title="Удалить"
                     >
                       <Trash2 className="w-3 h-3" />
                     </button>
